@@ -1,0 +1,19 @@
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+md-toast[md-theme="error"] .md-toast-content {
+    background-color: #F66536;
+}
+
+.md-errors-spacer:empty {
+     display: none;
+}
+
+button.pressed {
+    background-color: grey !important;
+}
