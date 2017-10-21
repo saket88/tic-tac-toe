@@ -8,6 +8,8 @@ angular.module("ticTacToe")
 
 function gameService($http, $q) {
 
+var service ={}
 
+return service;
 }
 
