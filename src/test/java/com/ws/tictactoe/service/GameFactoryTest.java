@@ -21,9 +21,8 @@ public class GameFactoryTest extends GameUnitTest {
     public void createGame(){
 
         GameParams gameParams= mock(GameParams.class);
-
-
         given(gameParams.getFirstPlayer()).willReturn(new Player(GameSign.O));
+
         Game game = underTest.createGame(gameParams);
 
         assertNotNull(game.getState());
