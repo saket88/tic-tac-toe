@@ -1,31 +1,41 @@
 package com.ws.tictactoe.api;
 
-import com.ws.tictactoe.GameMvcTests;
+
+import com.ws.tictactoe.model.GameDTO;
+
 import com.ws.tictactoe.model.GameSign;
 import org.jglue.fluentjson.JsonBuilderFactory;
 import org.junit.Test;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.ResultActions;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class GameRestTest extends GameMvcTests {
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class GameRestTest{
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Test
-    public void createGame() throws Exception {
-        String gameParams = JsonBuilderFactory.buildObject()
-                .add("firstPlayer", String.valueOf(GameSign.O))
-                .end()
-                .toString();
+    public void createGame() {
+        String gameParams =
+                JsonBuilderFactory.buildObject()
+                        .add("firstPlayer", GameSign.O.toString())
+                        .end()
+                        .toString();
 
+        ResponseEntity<GameDTO> responseEntity =
+                restTemplate.postForEntity("/games", gameParams, GameDTO.class);
 
-        ResultActions  resultActions = mockMvc.perform(post("/games")
-                .accept(MediaType.APPLICATION_JSON)
-                .content(gameParams))
-                .andDo(print())
-                .andExpect(status().isCreated());
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.CREATED));
 
     }
 }
