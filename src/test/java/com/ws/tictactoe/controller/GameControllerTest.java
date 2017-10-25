@@ -1,13 +1,16 @@
 package com.ws.tictactoe.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ws.tictactoe.GameMvcTests;
 import com.ws.tictactoe.generator.GameFactory;
 import com.ws.tictactoe.model.Game;
+import com.ws.tictactoe.model.GameParams;
 import com.ws.tictactoe.model.GameSign;
 import com.ws.tictactoe.repo.GameRepository;
 import org.jglue.fluentjson.JsonBuilderFactory;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -27,6 +30,9 @@ public class GameControllerTest extends GameMvcTests{
     @Mock
     private GameRepository gameRepository;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     @Test
     public void createGame() throws Exception {
 
@@ -37,7 +43,7 @@ public class GameControllerTest extends GameMvcTests{
                         .end()
                         .toString();
 
-        given(gameFactory.createGame(gameParams)).willReturn(game);
+        given(gameFactory.createGame(objectMapper.readValue(gameParams, GameParams.class))).willReturn(game);
         given(gameRepository.save(game)).willReturn(game);
 
         ResultActions resultActions = mockMvc.perform(post("/games")
@@ -46,10 +52,6 @@ public class GameControllerTest extends GameMvcTests{
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.nextPlayer").value(GameSign.O.toString()))
-                ;
-
-
-
+                .andExpect(jsonPath("$.nextPlayer").value(GameSign.O.toString()));
     }
 }
