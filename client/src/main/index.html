@@ -20,7 +20,8 @@
 
         <md-button class="md-primary md-raised" ng-class="{'md-icon-button': vm.screenIsSmall}"
                    ng-if="!vm.gameExists"
-                   ng-disabled="!gameConfig.$valid">
+                   ng-disabled="!gameConfig.$valid"
+                   ng-click="vm.startGame()">
             <md-icon md-svg-icon="play"></md-icon> <span ng-hide="vm.screenIsSmall">Play</span>
         </md-button>
 
@@ -61,14 +62,6 @@
     </form>
 </section>
 
-<section>
-    <div layout="row" layout-align="space-between" layout-padding class="md-caption">
-        <span>Next: </span>
-        <span>X wins:</span>
-        <span>O wins: </span>
-        <span>Ties: </span>
-    </div>
-</section>
 
 <section>
     <div id="board-container" layout="row" layout-align="center center" style="position: relative">
