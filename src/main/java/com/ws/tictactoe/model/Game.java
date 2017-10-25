@@ -1,7 +1,10 @@
 package com.ws.tictactoe.model;
 
+import java.util.UUID;
+
 public class Game {
     private GameState state;
+    private final String id = UUID.randomUUID().toString();
 
     public Game(GameState gameState) {
         this.state=gameState;
@@ -9,5 +12,9 @@ public class Game {
 
     public GameState getState() {
         return this.state;
+    }
+
+    public String getId() {
+        return id;
     }
 }
