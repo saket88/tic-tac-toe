@@ -7,12 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GameFactory {
-    public Game createGame(GameParams gameParams) {
 
+    public Game createGame(GameParams gameParams) {
         GameState gameState = GameState.builder()
                 .nextPlayer(gameParams.getFirstPlayer())
                 .build();
-
         return new Game(gameState);
     }
 }

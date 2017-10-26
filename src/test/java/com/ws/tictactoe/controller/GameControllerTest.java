@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -21,6 +21,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+
+@ActiveProfiles(profiles = "test")
 public class GameControllerTest extends GameMvcTests{
 
 
@@ -46,12 +49,14 @@ public class GameControllerTest extends GameMvcTests{
         given(gameFactory.createGame(objectMapper.readValue(gameParams, GameParams.class))).willReturn(game);
         given(gameRepository.save(game)).willReturn(game);
 
-        ResultActions resultActions = mockMvc.perform(post("/games")
+        mockMvc.perform(post("/games")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gameParams))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.nextPlayer").value(GameSign.O.toString()));
+                .andExpect(jsonPath("$.nextPlayer.gameSign").value(GameSign.O.toString()));
     }
+
+
 }

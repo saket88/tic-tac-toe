@@ -2,7 +2,6 @@ package com.ws.tictactoe.api;
 
 
 import com.ws.tictactoe.model.GameDTO;
-
 import com.ws.tictactoe.model.GameSign;
 import org.jglue.fluentjson.JsonBuilderFactory;
 import org.junit.Test;
@@ -10,10 +9,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
-
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -32,8 +29,14 @@ public class GameRestTest{
                         .end()
                         .toString();
 
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> entity = new HttpEntity<String>(gameParams, headers);
+
         ResponseEntity<GameDTO> responseEntity =
-                restTemplate.postForEntity("/games", gameParams, GameDTO.class);
+                restTemplate.postForEntity("/games", entity, GameDTO.class);
 
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.CREATED));
 
