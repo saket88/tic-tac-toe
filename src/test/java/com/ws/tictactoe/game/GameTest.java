@@ -36,7 +36,7 @@ public class GameTest extends GameUnitTest{
 
         Game underTest = new Game(gameState);
 
-        underTest.playTurn(new TurnParams(new Cell(1, 1)));
+        underTest.playTurn(new TurnParams(new Cell(0, 0)));
         assertThat(underTest.getState().getBoard(),is(expectedBoard));
     }
 
