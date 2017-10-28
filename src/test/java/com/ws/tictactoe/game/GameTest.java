@@ -40,4 +40,21 @@ public class GameTest extends GameUnitTest{
         assertThat(underTest.getState().getBoard(),is(expectedBoard));
     }
 
+    @Test
+    public void aPlayerWins() {
+
+        GameSign[][] boardTillNow = {
+                {GameSign.X, GameSign.O, null},
+                {null, GameSign.X, GameSign.O},
+                {null, null, null}
+        };
+        GameState gameState = GameState.builder()
+                .board(boardTillNow)
+                .nextPlayer(playerX).build();
+
+        Game underTest = new Game(gameState);
+
+        underTest.playTurn(new TurnParams(new Cell(2, 2)));
+        assertThat(underTest.getState().getWinner(),is(GameSign.X));
+    }
 }

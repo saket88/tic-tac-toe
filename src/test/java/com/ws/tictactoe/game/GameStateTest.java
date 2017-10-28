@@ -16,6 +16,7 @@ import static org.mockito.BDDMockito.given;
 public class GameStateTest extends GameUnitTest{
 
     @Mock Player player;
+
     @InjectMocks GameState underTest;
 
 
