@@ -44,7 +44,7 @@ public class GameRestTest extends GameRestSteps {
                 .end()
                 .toString();
 
-        assertThat(postFor(restTemplate,turnJson,"/"+gameId+"/turn").getStatusCode(),is(HttpStatus.OK));
+        assertThat(postFor(restTemplate,turnJson,"/games/"+gameId+"/turn").getStatusCode(),is(HttpStatus.OK));
 
 
 
