@@ -27,9 +27,9 @@ public class GameTest extends GameUnitTest{
     public void aPlayerTurn() {
 
         GameSign[][] expectedBoard = {
-                {GameSign.X, null, null},
-                {null, null, null},
-                {null, null, null}
+                {GameSign.X, GameSign.Blank, GameSign.Blank},
+                {GameSign.Blank, GameSign.Blank, GameSign.Blank},
+                {GameSign.Blank, GameSign.Blank, GameSign.Blank}
         };
         GameState gameState = GameState.builder().
                 nextPlayer(playerX).build();
@@ -38,15 +38,16 @@ public class GameTest extends GameUnitTest{
 
         underTest.playTurn(new TurnParams(new Cell(0, 0)));
         assertThat(underTest.getState().getBoard(),is(expectedBoard));
+        assertThat(underTest.getState().getNextPlayer().getGameSign(),is(playerO.getGameSign()));
     }
 
     @Test
     public void aPlayerWins() {
 
         GameSign[][] boardTillNow = {
-                {GameSign.X, GameSign.O, null},
-                {null, GameSign.X, GameSign.O},
-                {null, null, null}
+                {GameSign.X, GameSign.O, GameSign.Blank},
+                {GameSign.Blank, GameSign.X, GameSign.O},
+                {GameSign.Blank, GameSign.Blank, GameSign.Blank}
         };
         GameState gameState = GameState.builder()
                 .board(boardTillNow)

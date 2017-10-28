@@ -9,7 +9,7 @@ public class GameState {
 
     @Getter
     @JsonIgnore
-    GameSign[][] board = new GameSign[3][3];
+    GameSign[][] board;
 
 
     @Getter
@@ -19,8 +19,20 @@ public class GameState {
     private GameSign winner;
 
     public void update(Cell cell) {
-        GameSign[][] gameSign = getBoard();
-        gameSign[cell.getRow()][cell.getColumn()]= getNextPlayer().getGameSign();
+        initialiazeGameBoard();
+        GameSign[][] gameSigns = getBoard();
+        gameSigns[cell.getRow()][cell.getColumn()]= getNextPlayer().getGameSign();
+        nextPlayer=new Player(nextPlayer.getGameSign().toggle().name());
+    }
+
+    private void initialiazeGameBoard() {
+        if(board==null)
+        board= new GameSign[][]{
+                {GameSign.Blank, GameSign.Blank, GameSign.Blank},
+                {GameSign.Blank, GameSign.Blank, GameSign.Blank},
+                {GameSign.Blank, GameSign.Blank, GameSign.Blank}
+
+        };
     }
 
 
