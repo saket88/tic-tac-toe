@@ -4,18 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ws.tictactoe.GameMvcTests;
 import com.ws.tictactoe.generator.GameFactory;
 import com.ws.tictactoe.model.Game;
-import com.ws.tictactoe.model.GameParams;
 import com.ws.tictactoe.model.GameSign;
+import com.ws.tictactoe.model.GameState;
+import com.ws.tictactoe.model.Player;
 import com.ws.tictactoe.repo.GameRepository;
 import org.jglue.fluentjson.JsonBuilderFactory;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -30,24 +30,32 @@ public class GameControllerTest extends GameMvcTests{
     @Mock
     private GameFactory gameFactory;
 
-    @Mock
+    @Autowired
     private GameRepository gameRepository;
 
     @Autowired
     ObjectMapper objectMapper;
 
+    private Game game;
+
+    @Before
+    public void setUp(){
+        GameState initialState = GameState.builder()
+                .nextPlayer(new Player(GameSign.X.name()))
+                .build();
+        game= new Game(initialState);
+        game = gameRepository.save(game);
+
+    }
+
     @Test
     public void createGame() throws Exception {
 
-        Game game = mock(Game.class);
         String gameParams =
                 JsonBuilderFactory.buildObject()
                         .add("firstPlayer", GameSign.O.toString())
                         .end()
                         .toString();
-
-        given(gameFactory.createGame(objectMapper.readValue(gameParams, GameParams.class))).willReturn(game);
-        given(gameRepository.save(game)).willReturn(game);
 
         mockMvc.perform(post("/games")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -56,6 +64,23 @@ public class GameControllerTest extends GameMvcTests{
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.nextPlayer.gameSign").value(GameSign.O.toString()));
+    }
+
+    @Test
+    public void playTurn() throws Exception {
+        String turnJson = JsonBuilderFactory.buildObject()
+                .addObject("move")
+                .add("row", 1)
+                .add("column", 1)
+                .end()
+                .toString();
+
+        mockMvc.perform(post("/games/{id}/turn",game.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(turnJson))
+                .andDo(print())
+                .andExpect(status().isOk());
+
     }
 
 

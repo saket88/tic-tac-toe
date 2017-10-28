@@ -37,7 +37,6 @@ public class GameRestTest extends GameRestSteps {
     public void onAPlayersTurn(){
         ResponseEntity<GameDTO> responseEntity = createRestGame(restTemplate,"/games");
         String gameId = responseEntity.getBody().getId();
-
         String turnJson = JsonBuilderFactory.buildObject()
                 .addObject("move")
                 .add("row", 1)

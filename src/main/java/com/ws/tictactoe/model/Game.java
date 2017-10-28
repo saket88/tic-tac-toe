@@ -17,4 +17,8 @@ public class Game {
     public String getId() {
         return id;
     }
+
+    public void playTurn(TurnParams turnParams) {
+
+    }
 }
