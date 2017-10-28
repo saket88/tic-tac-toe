@@ -19,6 +19,6 @@ public class Game {
     }
 
     public void playTurn(TurnParams turnParams) {
-
+        state.update(turnParams.getMove());
     }
 }
