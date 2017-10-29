@@ -45,21 +45,21 @@ public class GameState {
                 break;
             }
         }
-        for (int i=row,j=col+2;i>=0 && j<numCols;i--,j++) {
+        for (int i=row,j=col;i>=0 && j<numCols;i--,j++) {
             if (board[i][j]==charAtPosition) {
                 topright++;
             } else {
                 break;
             }
         }
-        for (int i=row+2,j=col;i<numRows && j>=0;i++,j--) {
+        for (int i=row,j=col;i<numRows && j>=0;i++,j--) {
             if (board[i][j]==charAtPosition) {
                 bottomleft++;
             } else {
                 break;
             }
         }
-        for (int i=row+2,j=col+2;i<numRows && j<numCols;i++,j++) {
+        for (int i=row,j=col;i<numRows && j<numCols;i++,j++) {
             if (board[i][j]==charAtPosition) {
                 bottomright++;
             } else {
