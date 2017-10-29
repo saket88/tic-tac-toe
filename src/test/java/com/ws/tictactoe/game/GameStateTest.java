@@ -73,4 +73,70 @@ public class GameStateTest extends GameUnitTest{
 
 
     }
+
+    @Test
+    public void determineWinnerWhenAnExpectedMoveIsAtCentreDiagonal(){
+
+
+        GameSign[][] boardTillNow = {
+                {GameSign.O, GameSign.O, GameSign.X},
+                {GameSign.Blank, GameSign.Blank, GameSign.O},
+                {GameSign.X, GameSign.Blank, GameSign.Blank}
+        };
+
+        underTest =GameState.builder().board(boardTillNow)
+                .nextPlayer(new Player(GameSign.X.name()))
+                .build();
+
+        Cell cell = new Cell(1,1);
+
+        underTest.update(cell);
+
+        assertThat(underTest.getWinner(),is(GameSign.X));
+
+    }
+
+    @Test
+    public void determineWinnerWhenAnExpectedMoveIsAtCenterLeftHorizontal(){
+
+
+        GameSign[][] boardTillNow = {
+                {GameSign.Blank, GameSign.O, GameSign.O},
+                {GameSign.Blank, GameSign.X, GameSign.X},
+                {GameSign.Blank, GameSign.Blank, GameSign.Blank}
+        };
+
+        underTest =GameState.builder().board(boardTillNow)
+                .nextPlayer(new Player(GameSign.X.name()))
+                .build();
+
+        Cell cell = new Cell(1,0);
+
+        underTest.update(cell);
+
+        assertThat(underTest.getWinner(),is(GameSign.X));
+
+    }
+
+    @Test
+    public void determineWinnerWhenAnExpectedMoveIsAtCenterRightVertical(){
+
+
+        GameSign[][] boardTillNow = {
+                {GameSign.O, GameSign.O, GameSign.X},
+                {GameSign.Blank, GameSign.Blank, GameSign.Blank},
+                {GameSign.Blank, GameSign.Blank, GameSign.X}
+        };
+
+        underTest =GameState.builder().board(boardTillNow)
+                .nextPlayer(new Player(GameSign.X.name()))
+                .build();
+
+        Cell cell = new Cell(1,2);
+
+        underTest.update(cell);
+
+        assertThat(underTest.getWinner(),is(GameSign.X));
+
+    }
 }
