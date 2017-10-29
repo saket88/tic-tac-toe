@@ -13,8 +13,8 @@ public class GameTest extends GameUnitTest{
     @Mock  GameState state;
 
 
-    private Player  playerX = new Player(GameSign.X.name());
-    private Player  playerO = new Player(GameSign.O.name());
+
+
 
     @Test
     public void createGame() {
@@ -25,6 +25,8 @@ public class GameTest extends GameUnitTest{
 
     @Test
     public void aPlayerTurn() {
+        Player  playerX = new Player(GameSign.X.name(),new Cell(0, 0));
+        Player  playerO = new Player(GameSign.O.name(),new Cell(1, 0));
 
         GameSign[][] expectedBoard = {
                 {GameSign.X, GameSign.Blank, GameSign.Blank},
@@ -43,6 +45,8 @@ public class GameTest extends GameUnitTest{
 
     @Test
     public void aPlayerWins() {
+
+        Player  playerX = new Player(GameSign.X.name(),new Cell(2, 2));
 
         GameSign[][] boardTillNow = {
                 {GameSign.X, GameSign.O, GameSign.Blank},

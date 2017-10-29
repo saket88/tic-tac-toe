@@ -43,7 +43,7 @@ function gameService($http, $q) {
         this.playTurn = playTurn;
 
         function playTurn(selectedMove) {
-            return $http.post("games/"+self.id+"/turns", {
+            return $http.post("games/"+self.id+"/turn", {
                 turnNumber: self.turnNumber,
                 move: selectedMove
             }).then(function(response) {

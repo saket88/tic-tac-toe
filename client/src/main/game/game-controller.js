@@ -25,7 +25,7 @@ function GameController(GAME_EVENTS, PIECES, gameService, $scope, $q, $mdToast, 
 
             PIECES: PIECES,
               gameConfig: {
-                            firstPlayer: "RANDOM"
+                            firstPlayer: "X"
               }
     }).then(function(data) {
                   _.extend(vm, data);
@@ -153,9 +153,7 @@ function GameController(GAME_EVENTS, PIECES, gameService, $scope, $q, $mdToast, 
                 return;
             }
 
-            if (gameService.currentGame.board[selectedCell.row][selectedCell.column]) {
-                return;
-            }
+
 
             deferredMove.resolve(selectedCell);
         }

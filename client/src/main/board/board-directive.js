@@ -56,6 +56,8 @@ function board(GAME_EVENTS, PIECES, $window, $timeout, $log) {
             resizeAndDrawCanvas(false);
         }, 150));
 
+        canvas.onclick=onClickOfCanvas;
+
 
         //---------------------------------------------------//
 
@@ -135,6 +137,28 @@ function board(GAME_EVENTS, PIECES, $window, $timeout, $log) {
 
         }
 
+        function onClickOfCanvas(e){
+        var canvasCoordinates =getCanvasCoordinates(e);
+        var cellCoordinates=getCellCoordinates(canvasCoordinates);
+        $scope.$emit(GAME_EVENTS.MOVE_SELECTED, cellCoordinates);
+        }
+
+
+        function getCanvasCoordinates(clickEvent) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: clickEvent.pageX - rect.left,
+                y: clickEvent.pageY - rect.top
+            };
+        }
+
+
+        function getCellCoordinates(canvasCoordinates) {
+            return {
+                row: _.floor(canvasCoordinates.y/cellSize),
+                column: _.floor(canvasCoordinates.x/cellSize)
+            };
+        }
     }
 }
 

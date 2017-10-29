@@ -1,26 +1,32 @@
 package com.ws.tictactoe.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Getter;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE,getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class GameDTO {
 
-    private final Game game;
+
+    public final Game game;
     @Getter
-    private final Player nextPlayer;
+    private  Player nextPlayer;
+
     @Getter
-    private final String id;
+    private  String id;
+
+    @Getter
+    private  Move move;
 
     public GameDTO(){
         game = null;
-        nextPlayer = null;
-        id = "";
     }
-
-
-    public GameDTO(Game game) {
-        this.game = game;
+    
+    public GameDTO(Game game)
+    {
+        this.game=game;
         this.nextPlayer = game.getState().getNextPlayer();
-        this.id = game.getId();
+        this.id=game.getId();
+        this.move=game.getLastMove();
     }
 
 

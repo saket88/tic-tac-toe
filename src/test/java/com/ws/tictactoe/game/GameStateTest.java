@@ -5,17 +5,13 @@ import com.ws.tictactoe.model.Cell;
 import com.ws.tictactoe.model.GameSign;
 import com.ws.tictactoe.model.GameState;
 import com.ws.tictactoe.model.Player;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.MockitoAnnotations;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GameStateTest extends GameUnitTest{
-
-    Player player;
 
     GameState underTest;
 
@@ -27,16 +23,12 @@ public class GameStateTest extends GameUnitTest{
 
 
 
-@Before
-public void setUp(){
-    MockitoAnnotations.initMocks(this);
-}
     @Test
     public void updateAState(){
         Cell cell = new Cell(1,1);
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name()))
+                .nextPlayer(new Player(GameSign.X.name(),cell))
                 .build();
 
         underTest.update(cell);
@@ -52,7 +44,7 @@ public void setUp(){
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name()))
+                .nextPlayer(new Player(GameSign.X.name(),cell))
                 .build();
 
         underTest.update(cell);
@@ -71,7 +63,7 @@ public void setUp(){
         };
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name()))
+                .nextPlayer(new Player(GameSign.X.name(),cell))
                 .build();
 
         underTest.update(cell);
@@ -83,6 +75,8 @@ public void setUp(){
 
     @Test
     public void determineWinnerWhenAnExpectedMoveIsAtCentreDiagonal(){
+        Cell cell = new Cell(1,1);
+
         GameSign[][] boardTillNow = {
                 {GameSign.O, GameSign.O, GameSign.X},
                 {GameSign.Blank, GameSign.Blank, GameSign.O},
@@ -91,11 +85,11 @@ public void setUp(){
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name()))
+                .nextPlayer(new Player(GameSign.X.name(),cell))
                 .build();
 
 
-        Cell cell = new Cell(1,1);
+
 
         underTest.update(cell);
 
@@ -105,6 +99,8 @@ public void setUp(){
 
     @Test
     public void determineWinnerWhenAnExpectedMoveIsAtCenterLeftHorizontal(){
+        Cell cell = new Cell(1,0);
+
         GameSign[][] boardTillNow = {
                 {GameSign.Blank, GameSign.O, GameSign.O},
                 {GameSign.Blank, GameSign.X, GameSign.X},
@@ -113,10 +109,9 @@ public void setUp(){
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name()))
+                .nextPlayer(new Player(GameSign.X.name(),cell))
                 .build();
 
-        Cell cell = new Cell(1,0);
 
         underTest.update(cell);
 
@@ -126,6 +121,8 @@ public void setUp(){
 
     @Test
     public void determineWinnerWhenAnExpectedMoveIsAtCenterRightVertical(){
+        Cell cell = new Cell(1,2);
+
         GameSign[][] boardTillNow = {
                 {GameSign.O, GameSign.O, GameSign.X},
                 {GameSign.Blank, GameSign.Blank, GameSign.Blank},
@@ -134,10 +131,9 @@ public void setUp(){
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name()))
+                .nextPlayer(new Player(GameSign.X.name(),cell))
                 .build();
 
-        Cell cell = new Cell(1,2);
 
         underTest.update(cell);
 
@@ -148,6 +144,8 @@ public void setUp(){
 
     @Test
     public void determineWinnerWhenAnExpectedMoveIsAtCenterRightHorizontal(){
+        Cell cell = new Cell(0,1);
+
         GameSign[][] boardTillNow = {
                 {GameSign.X, GameSign.Blank, GameSign.X},
                 {GameSign.Blank, GameSign.O, GameSign.Blank},
@@ -156,10 +154,9 @@ public void setUp(){
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name()))
+                .nextPlayer(new Player(GameSign.X.name(),cell))
                 .build();
 
-        Cell cell = new Cell(0,1);
 
         underTest.update(cell);
 
@@ -169,6 +166,8 @@ public void setUp(){
 
     @Test
     public void determineWinnerWhenAnExpectedMoveIsAtCenterHorizontal(){
+        Cell cell = new Cell(1,1);
+
         GameSign[][] boardTillNow = {
                 {GameSign.Blank, GameSign.O, GameSign.Blank},
                 {GameSign.X, GameSign.Blank, GameSign.X},
@@ -177,10 +176,10 @@ public void setUp(){
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name()))
+                .nextPlayer(new Player(GameSign.X.name(),cell))
                 .build();
 
-        Cell cell = new Cell(1,1);
+
 
         underTest.update(cell);
 
@@ -190,6 +189,8 @@ public void setUp(){
 
     @Test
     public void determineWinnerWhenAnExpectedMoveIsAtCenterVertical(){
+        Cell cell = new Cell(1,1);
+
         GameSign[][] boardTillNow = {
                 {GameSign.Blank, GameSign.X, GameSign.Blank},
                 {GameSign.Blank, GameSign.Blank, GameSign.O},
@@ -198,10 +199,9 @@ public void setUp(){
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name()))
+                .nextPlayer(new Player(GameSign.X.name(),cell))
                 .build();
 
-        Cell cell = new Cell(1,1);
 
         underTest.update(cell);
 
@@ -211,6 +211,8 @@ public void setUp(){
 
     @Test
     public void determineATie(){
+        Cell cell = new Cell(2,0);
+
         GameSign[][] boardTillNow = {
                 {GameSign.O, GameSign.X, GameSign.O},
                 {GameSign.O, GameSign.X, GameSign.X},
@@ -219,10 +221,10 @@ public void setUp(){
 
         underTest =GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name()))
+                .nextPlayer(new Player(GameSign.X.name(),cell))
                 .build();
 
-        Cell cell = new Cell(2,0);
+
 
         underTest.update(cell);
 

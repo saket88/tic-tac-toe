@@ -18,6 +18,8 @@ public class GameState {
     Player nextPlayer;
 
 
+
+
     @Getter
     private GameSign winner;
 
@@ -31,7 +33,7 @@ public class GameState {
         int row = cell.getRow();
         int column = cell.getColumn();
         gameSigns[row][column] = currentGameSign;
-        nextPlayer = new Player(nextPlayer.getGameSign().toggle().name());
+        nextPlayer = new Player(nextPlayer.getGameSign().toggle().name(),new Cell(row, column));
         determineResult(currentGameSign, row, column);
     }
 

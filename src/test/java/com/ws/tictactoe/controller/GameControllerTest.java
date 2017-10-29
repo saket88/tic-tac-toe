@@ -3,10 +3,7 @@ package com.ws.tictactoe.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ws.tictactoe.GameMvcTests;
 import com.ws.tictactoe.generator.GameFactory;
-import com.ws.tictactoe.model.Game;
-import com.ws.tictactoe.model.GameSign;
-import com.ws.tictactoe.model.GameState;
-import com.ws.tictactoe.model.Player;
+import com.ws.tictactoe.model.*;
 import com.ws.tictactoe.repo.GameRepository;
 import org.jglue.fluentjson.JsonBuilderFactory;
 import org.junit.Before;
@@ -41,7 +38,7 @@ public class GameControllerTest extends GameMvcTests{
     @Before
     public void setUp(){
         GameState initialState = GameState.builder()
-                .nextPlayer(new Player(GameSign.X.name()))
+                .nextPlayer(new Player(GameSign.X.name(),new Cell(1,1)))
                 .build();
         game= new Game(initialState);
         game = gameRepository.save(game);
