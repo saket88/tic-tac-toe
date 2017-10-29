@@ -56,6 +56,7 @@ public class GameTest extends GameUnitTest{
         Game underTest = new Game(gameState);
 
         underTest.playTurn(new TurnParams(new Cell(2, 2)));
+
         assertThat(underTest.getState().getWinner(),is(GameSign.X));
     }
 }

@@ -17,7 +17,15 @@ public class GameStateTest extends GameUnitTest{
 
     @Mock Player player;
 
-    @InjectMocks GameState underTest;
+     @InjectMocks  GameState underTest;
+
+    GameSign[][] boardTillNow = {
+            {GameSign.X, GameSign.O, GameSign.Blank},
+            {GameSign.Blank, GameSign.X, GameSign.O},
+            {GameSign.Blank, GameSign.Blank, GameSign.Blank}
+    };
+
+
 
 
     @Test
@@ -28,6 +36,21 @@ public class GameStateTest extends GameUnitTest{
         underTest.update(cell);
 
         assertThat(underTest.getBoard()[1][1],is(GameSign.X));
+
+
+    }
+
+    @Test
+    public void determineWinner(){
+        Cell cell = new Cell(2,2);
+
+        underTest =GameState.builder().board(boardTillNow)
+                .nextPlayer(new Player(GameSign.X.name()))
+                .build();
+
+        underTest.update(cell);
+
+        assertThat(underTest.getWinner(),is(GameSign.X));
 
 
     }
