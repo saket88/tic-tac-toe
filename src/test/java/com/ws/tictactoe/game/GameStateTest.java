@@ -41,8 +41,27 @@ public class GameStateTest extends GameUnitTest{
     }
 
     @Test
-    public void determineWinner(){
+    public void determineWinnerWhenAnExpectedMoveisAtBottomRightDiagonal(){
         Cell cell = new Cell(2,2);
+
+        underTest =GameState.builder().board(boardTillNow)
+                .nextPlayer(new Player(GameSign.X.name()))
+                .build();
+
+        underTest.update(cell);
+
+        assertThat(underTest.getWinner(),is(GameSign.X));
+    }
+
+    @Test
+    public void determineWinnerWhenAnExpectedMoveisAtBottomLeftDiagonal(){
+        Cell cell = new Cell(2,0);
+
+        GameSign[][] boardTillNow = {
+                {GameSign.Blank, GameSign.O, GameSign.X},
+                {GameSign.Blank, GameSign.X, GameSign.O},
+                {GameSign.Blank, GameSign.Blank, GameSign.Blank}
+        };
 
         underTest =GameState.builder().board(boardTillNow)
                 .nextPlayer(new Player(GameSign.X.name()))
