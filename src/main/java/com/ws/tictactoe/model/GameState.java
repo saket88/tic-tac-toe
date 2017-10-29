@@ -32,19 +32,19 @@ public class GameState {
         int column = cell.getColumn();
         gameSigns[row][column] = currentGameSign;
         nextPlayer = new Player(nextPlayer.getGameSign().toggle().name());
-        determineTheWinner(currentGameSign, row, column);
+        determineResult(currentGameSign, row, column);
     }
 
 
-    private void determineTheWinner(GameSign currentGameSign, int row, int column) {
-        if (hasResultFor(currentGameSign, row, column))
+    private void determineResult(GameSign currentGameSign, int row, int column) {
+        if (hasWinnerFor(currentGameSign, row, column))
             winner = currentGameSign;
         else if (!hasBlank()) {
             tie = true;
         }
     }
 
-    private boolean hasResultFor(GameSign charAtPosition, int row, int col) {
+    private boolean hasWinnerFor(GameSign charAtPosition, int row, int col) {
 
         int numRows = board.length;
         int numCols = board[0].length;
