@@ -5,19 +5,19 @@ import com.ws.tictactoe.model.Cell;
 import com.ws.tictactoe.model.GameSign;
 import com.ws.tictactoe.model.GameState;
 import com.ws.tictactoe.model.Player;
+import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.BDDMockito.given;
 
 public class GameStateTest extends GameUnitTest{
 
-    @Mock Player player;
+    Player player;
 
-     @InjectMocks  GameState underTest;
+    GameState underTest;
 
     GameSign[][] boardTillNow = {
             {GameSign.X, GameSign.O, GameSign.Blank},
@@ -27,11 +27,17 @@ public class GameStateTest extends GameUnitTest{
 
 
 
-
+@Before
+public void setUp(){
+    MockitoAnnotations.initMocks(this);
+}
     @Test
     public void updateAState(){
         Cell cell = new Cell(1,1);
-        given(player.getGameSign()).willReturn(GameSign.X);
+        underTest = GameState.builder()
+                .board(boardTillNow)
+                .nextPlayer(new Player(GameSign.X.name()))
+                .build();
 
         underTest.update(cell);
 
@@ -44,7 +50,8 @@ public class GameStateTest extends GameUnitTest{
     public void determineWinnerWhenAnExpectedMoveisAtBottomRightDiagonal(){
         Cell cell = new Cell(2,2);
 
-        underTest =GameState.builder().board(boardTillNow)
+        underTest = GameState.builder()
+                .board(boardTillNow)
                 .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
@@ -62,8 +69,8 @@ public class GameStateTest extends GameUnitTest{
                 {GameSign.Blank, GameSign.X, GameSign.O},
                 {GameSign.Blank, GameSign.Blank, GameSign.Blank}
         };
-
-        underTest =GameState.builder().board(boardTillNow)
+        underTest = GameState.builder()
+                .board(boardTillNow)
                 .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
@@ -76,17 +83,17 @@ public class GameStateTest extends GameUnitTest{
 
     @Test
     public void determineWinnerWhenAnExpectedMoveIsAtCentreDiagonal(){
-
-
         GameSign[][] boardTillNow = {
                 {GameSign.O, GameSign.O, GameSign.X},
                 {GameSign.Blank, GameSign.Blank, GameSign.O},
                 {GameSign.X, GameSign.Blank, GameSign.Blank}
         };
 
-        underTest =GameState.builder().board(boardTillNow)
+        underTest = GameState.builder()
+                .board(boardTillNow)
                 .nextPlayer(new Player(GameSign.X.name()))
                 .build();
+
 
         Cell cell = new Cell(1,1);
 
@@ -98,15 +105,14 @@ public class GameStateTest extends GameUnitTest{
 
     @Test
     public void determineWinnerWhenAnExpectedMoveIsAtCenterLeftHorizontal(){
-
-
         GameSign[][] boardTillNow = {
                 {GameSign.Blank, GameSign.O, GameSign.O},
                 {GameSign.Blank, GameSign.X, GameSign.X},
                 {GameSign.Blank, GameSign.Blank, GameSign.Blank}
         };
 
-        underTest =GameState.builder().board(boardTillNow)
+        underTest = GameState.builder()
+                .board(boardTillNow)
                 .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
@@ -120,15 +126,14 @@ public class GameStateTest extends GameUnitTest{
 
     @Test
     public void determineWinnerWhenAnExpectedMoveIsAtCenterRightVertical(){
-
-
         GameSign[][] boardTillNow = {
                 {GameSign.O, GameSign.O, GameSign.X},
                 {GameSign.Blank, GameSign.Blank, GameSign.Blank},
                 {GameSign.Blank, GameSign.Blank, GameSign.X}
         };
 
-        underTest =GameState.builder().board(boardTillNow)
+        underTest = GameState.builder()
+                .board(boardTillNow)
                 .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
@@ -137,6 +142,92 @@ public class GameStateTest extends GameUnitTest{
         underTest.update(cell);
 
         assertThat(underTest.getWinner(),is(GameSign.X));
+
+    }
+
+
+    @Test
+    public void determineWinnerWhenAnExpectedMoveIsAtCenterRightHorizontal(){
+        GameSign[][] boardTillNow = {
+                {GameSign.X, GameSign.Blank, GameSign.X},
+                {GameSign.Blank, GameSign.O, GameSign.Blank},
+                {GameSign.Blank, GameSign.Blank, GameSign.O}
+        };
+
+        underTest = GameState.builder()
+                .board(boardTillNow)
+                .nextPlayer(new Player(GameSign.X.name()))
+                .build();
+
+        Cell cell = new Cell(0,1);
+
+        underTest.update(cell);
+
+        assertThat(underTest.getWinner(),is(GameSign.X));
+
+    }
+
+    @Test
+    public void determineWinnerWhenAnExpectedMoveIsAtCenterHorizontal(){
+        GameSign[][] boardTillNow = {
+                {GameSign.Blank, GameSign.O, GameSign.Blank},
+                {GameSign.X, GameSign.Blank, GameSign.X},
+                {GameSign.Blank, GameSign.Blank, GameSign.O}
+        };
+
+        underTest = GameState.builder()
+                .board(boardTillNow)
+                .nextPlayer(new Player(GameSign.X.name()))
+                .build();
+
+        Cell cell = new Cell(1,1);
+
+        underTest.update(cell);
+
+        assertThat(underTest.getWinner(),is(GameSign.X));
+
+    }
+
+    @Test
+    public void determineWinnerWhenAnExpectedMoveIsAtCenterVertical(){
+        GameSign[][] boardTillNow = {
+                {GameSign.Blank, GameSign.X, GameSign.Blank},
+                {GameSign.Blank, GameSign.Blank, GameSign.O},
+                {GameSign.Blank, GameSign.X, GameSign.O}
+        };
+
+        underTest = GameState.builder()
+                .board(boardTillNow)
+                .nextPlayer(new Player(GameSign.X.name()))
+                .build();
+
+        Cell cell = new Cell(1,1);
+
+        underTest.update(cell);
+
+        assertThat(underTest.getWinner(),is(GameSign.X));
+
+    }
+
+    @Test
+    public void determineATie(){
+        GameSign[][] boardTillNow = {
+                {GameSign.O, GameSign.X, GameSign.O},
+                {GameSign.O, GameSign.X, GameSign.X},
+                {GameSign.Blank, GameSign.O, GameSign.X}
+        };
+
+        underTest =GameState.builder()
+                .board(boardTillNow)
+                .nextPlayer(new Player(GameSign.X.name()))
+                .build();
+
+        Cell cell = new Cell(2,0);
+
+        underTest.update(cell);
+
+        assertThat(underTest.getWinner(),is(nullValue()));
+        assertThat(underTest.isTie(),is(true));
 
     }
 }
