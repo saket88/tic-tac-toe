@@ -8,6 +8,7 @@ public class GameDTO {
 
 
     public final Game game;
+
     @Getter
     private  Player nextPlayer;
 
@@ -16,6 +17,19 @@ public class GameDTO {
 
     @Getter
     private  Move move;
+
+    public GameSign[][] getBoard() {
+        board = new GameSign[][]{
+                {GameSign.Blank, GameSign.Blank, GameSign.Blank},
+                {GameSign.Blank, GameSign.Blank, GameSign.Blank},
+                {GameSign.Blank, GameSign.Blank, GameSign.Blank}
+
+        };
+
+        return board;
+    }
+
+    private GameSign[] [] board;
 
     public GameDTO(){
         game = null;
@@ -30,5 +44,7 @@ public class GameDTO {
     }
 
 
-
+    public GameSign getWinner() {
+        return game.getState().getWinner();
+    }
 }

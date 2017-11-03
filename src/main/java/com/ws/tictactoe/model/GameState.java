@@ -7,8 +7,6 @@ import lombok.Getter;
 @Builder
 public class GameState {
 
-
-
     @Getter
     @JsonIgnore
     GameSign[][] board;
@@ -16,8 +14,6 @@ public class GameState {
 
     @Getter
     Player nextPlayer;
-
-
 
 
     @Getter
@@ -33,8 +29,9 @@ public class GameState {
         int row = cell.getRow();
         int column = cell.getColumn();
         gameSigns[row][column] = currentGameSign;
-        nextPlayer = new Player(nextPlayer.getGameSign().toggle().name(),new Cell(row, column));
+        nextPlayer = new Player(nextPlayer.getGameSign().name(),new Cell(row, column));
         determineResult(currentGameSign, row, column);
+
     }
 
 

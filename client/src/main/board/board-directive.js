@@ -57,7 +57,7 @@ function board(GAME_EVENTS, PIECES, $window, $timeout, $log) {
         }, 150));
 
         canvas.onclick=onClickOfCanvas;
-
+        $scope.$on(GAME_EVENTS.MOVE_COMPLETED, onMoveCompleted);
 
         //---------------------------------------------------//
 
@@ -159,6 +159,67 @@ function board(GAME_EVENTS, PIECES, $window, $timeout, $log) {
                 column: _.floor(canvasCoordinates.x/cellSize)
             };
         }
+
+        function onMoveCompleted(event, result) {
+                    lastTurnResult = result;
+
+                    board[result.move.cell.row][result.move.cell.column] = result.move.piece;
+
+                    if (result.move.piece === PIECES.O) {
+                        drawCircle(result.move.cell);
+                    } else if (result.move.piece === PIECES.X) {
+                        drawCross(result.move.cell);
+                    }
+
+                    if (result.winningSequence) {
+                        drawLine(result.winningSequence.start, result.winningSequence.end);
+                    }
+         }
+
+          function drawCircle(cell) {
+                     ctx.strokeStyle = PIECE_COLOR;
+
+                     ctx.beginPath();
+                     ctx.arc((cell.column + 1/2)*cellSize, (cell.row + 1/2)*cellSize, (cellSize - 3)/2 - 0.1*cellSize, 0, 2*Math.PI);
+                     ctx.lineWidth = 3;
+                     ctx.stroke();
+           }
+
+          function drawLine(start, end) {
+
+                       var startX, startY, endX, endY;
+
+                       startX = (start.column + 1/2)*cellSize;
+                       startY = (start.row + 1/2)*cellSize;
+                       endX = (end.column + 1/2)*cellSize;
+                       endY = (end.row + 1/2)*cellSize;
+
+                       ctx.beginPath();
+                       ctx.moveTo(startX, startY);
+                       ctx.lineTo(endX, endY);
+
+                       ctx.strokeStyle = "yellow";
+                       ctx.lineWidth = 4;
+                       ctx.stroke();
+          }
+
+          function drawCross(cell) {
+                      ctx.strokeStyle = PIECE_COLOR;
+
+                      ctx.beginPath();
+
+                      // Upper left to lower right
+                      ctx.moveTo(cell.column*cellSize + 0.2*cellSize, cell.row*cellSize + 0.2*cellSize);
+                      ctx.lineTo((cell.column + 1)*cellSize - 0.2*cellSize, (cell.row + 1)*cellSize - 0.2*cellSize);
+
+                      // Upper right to to lower left
+                      ctx.moveTo((cell.column + 1)*cellSize - 0.2*cellSize, cell.row*cellSize + 0.2*cellSize);
+                      ctx.lineTo(cell.column*cellSize + 0.2*cellSize, (cell.row + 1)*cellSize - 0.2*cellSize);
+
+                      ctx.lineWidth = 3;
+                      ctx.stroke();
+          }
+
     }
 }
 

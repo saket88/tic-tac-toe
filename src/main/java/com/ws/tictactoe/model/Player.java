@@ -1,5 +1,6 @@
 package com.ws.tictactoe.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,6 +10,7 @@ public class Player {
 
 
     @Getter
+    @JsonIgnore
     private Cell latestMove;
 
     @Getter
