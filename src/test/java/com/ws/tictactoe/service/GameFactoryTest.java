@@ -21,7 +21,7 @@ public class GameFactoryTest extends GameUnitTest {
     public void createGame(){
 
         GameParams gameParams= mock(GameParams.class);
-        given(gameParams.getFirstPlayer()).willReturn(new Player(GameSign.O.name(),new Cell(1,1)));
+        given(gameParams.getFirstPlayer()).willReturn(new Player(GameSign.O.name()));
 
         Game game = underTest.createGame(gameParams);
 

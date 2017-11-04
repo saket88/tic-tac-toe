@@ -1,7 +1,6 @@
 package com.ws.tictactoe.repository;
 
 import com.ws.tictactoe.GameUnitTest;
-import com.ws.tictactoe.model.Cell;
 import com.ws.tictactoe.model.Game;
 import com.ws.tictactoe.model.GameState;
 import com.ws.tictactoe.model.Player;
@@ -22,7 +21,7 @@ public class GameRepositoryTest extends GameUnitTest{
     public void saveTheGame(){
 
         Game game = underTest.save(new Game(GameState.builder()
-        .nextPlayer(new Player("O",new Cell(1,1)))
+        .nextPlayer(new Player("O"))
         .build()));
 
         assertThat(game,is(underTest.findById(game.getId())));

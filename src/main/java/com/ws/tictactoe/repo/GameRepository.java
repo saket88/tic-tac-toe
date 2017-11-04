@@ -18,4 +18,8 @@ public class GameRepository {
     public Game findById(String id) {
         return games.get(id);
     }
+
+    public Game delete(Game game) {
+        return games.remove(game.getId());
+    }
 }

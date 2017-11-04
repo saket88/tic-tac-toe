@@ -25,8 +25,8 @@ public class GameTest extends GameUnitTest{
 
     @Test
     public void aPlayerTurn() {
-        Player  playerX = new Player(GameSign.X.name(),new Cell(0, 0));
-        Player  playerO = new Player(GameSign.O.name(),new Cell(1, 0));
+        Player  playerX = new Player(GameSign.X.name());
+        Player  playerO = new Player(GameSign.O.name());
 
         GameSign[][] expectedBoard = {
                 {GameSign.X, GameSign.Blank, GameSign.Blank},
@@ -46,7 +46,7 @@ public class GameTest extends GameUnitTest{
     @Test
     public void aPlayerWins() {
 
-        Player  playerX = new Player(GameSign.X.name(),new Cell(2, 2));
+        Player  playerX = new Player(GameSign.X.name());
 
         GameSign[][] boardTillNow = {
                 {GameSign.X, GameSign.O, GameSign.Blank},

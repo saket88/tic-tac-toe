@@ -29,6 +29,10 @@ public class GameDTO {
         return board;
     }
 
+    public boolean isGameEnded() {
+        return game.getState().isAtEnd();
+    }
+
     private GameSign[] [] board;
 
     public GameDTO(){
@@ -47,4 +51,10 @@ public class GameDTO {
     public GameSign getWinner() {
         return game.getState().getWinner();
     }
+
+    public WinningPosition getWinningSequence() {
+        return game.getState().getWinningSequence();
+    }
+
+
 }

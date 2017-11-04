@@ -28,7 +28,7 @@ public class GameStateTest extends GameUnitTest{
         Cell cell = new Cell(1,1);
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name(),cell))
+                .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
         underTest.update(cell);
@@ -44,7 +44,7 @@ public class GameStateTest extends GameUnitTest{
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name(),cell))
+                .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
         underTest.update(cell);
@@ -63,7 +63,7 @@ public class GameStateTest extends GameUnitTest{
         };
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name(),cell))
+                .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
         underTest.update(cell);
@@ -85,7 +85,7 @@ public class GameStateTest extends GameUnitTest{
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name(),cell))
+                .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
 
@@ -109,7 +109,7 @@ public class GameStateTest extends GameUnitTest{
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name(),cell))
+                .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
 
@@ -131,7 +131,7 @@ public class GameStateTest extends GameUnitTest{
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name(),cell))
+                .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
 
@@ -154,7 +154,7 @@ public class GameStateTest extends GameUnitTest{
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name(),cell))
+                .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
 
@@ -176,7 +176,7 @@ public class GameStateTest extends GameUnitTest{
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name(),cell))
+                .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
 
@@ -199,7 +199,7 @@ public class GameStateTest extends GameUnitTest{
 
         underTest = GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name(),cell))
+                .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
 
@@ -221,7 +221,7 @@ public class GameStateTest extends GameUnitTest{
 
         underTest =GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name(),cell))
+                .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
 
@@ -230,6 +230,34 @@ public class GameStateTest extends GameUnitTest{
 
         assertThat(underTest.getWinner(),is(nullValue()));
         assertThat(underTest.isTie(),is(true));
+
+    }
+
+
+    @Test
+    public void determineTheStartAndEndIndexWhenAWin(){
+        Cell cell = new Cell(1,2);
+
+        GameSign[][] boardTillNow = {
+                {GameSign.O, GameSign.O, GameSign.X},
+                {GameSign.O, GameSign.X, GameSign.Blank},
+                {GameSign.X, GameSign.O, GameSign.X}
+        };
+
+        underTest =GameState.builder()
+                .board(boardTillNow)
+                .nextPlayer(new Player(GameSign.X.name()))
+                .build();
+
+
+
+        underTest.update(cell);
+
+
+        assertThat(underTest.getWinningSequence().getStart().getRow(),is(2));
+        assertThat(underTest.getWinningSequence().getStart().getColumn(),is(2));
+        assertThat(underTest.getWinningSequence().getEnd().getRow(),is(0));
+        assertThat(underTest.getWinningSequence().getEnd().getColumn(),is(2));
 
     }
 }

@@ -35,6 +35,14 @@ public class GameController {
         return new GameDTO(game);
     }
 
+
+    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable String id) {
+            Game game = gameRepository.findById(id);
+            gameRepository.delete(game);
+    }
+
     @Autowired
     public void setGameRepository(GameRepository gameRepository) {
         this.gameRepository = gameRepository;

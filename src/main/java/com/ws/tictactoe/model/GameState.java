@@ -11,7 +11,6 @@ public class GameState {
     @JsonIgnore
     GameSign[][] board;
 
-
     @Getter
     Player nextPlayer;
 
@@ -22,6 +21,11 @@ public class GameState {
     @Getter
     private boolean tie;
 
+    @Getter
+    private Move lastMove;
+
+    private WinningPosition winningSequence;
+
     public void update(Cell cell) {
         initialiazeGameBoard();
         GameSign[][] gameSigns = getBoard();
@@ -29,15 +33,17 @@ public class GameState {
         int row = cell.getRow();
         int column = cell.getColumn();
         gameSigns[row][column] = currentGameSign;
-        nextPlayer = new Player(nextPlayer.getGameSign().name(),new Cell(row, column));
+        lastMove = new Move(nextPlayer.getGameSign(),new Cell(row, column));
+        nextPlayer = new Player(nextPlayer.getGameSign().toggle().name());
         determineResult(currentGameSign, row, column);
 
     }
 
 
     private void determineResult(GameSign currentGameSign, int row, int column) {
-        if (hasWinnerFor(currentGameSign, row, column))
+        if (hasWinnerFor(currentGameSign, row, column)) {
             winner = currentGameSign;
+        }
         else if (!hasBlank()) {
             tie = true;
         }
@@ -47,6 +53,7 @@ public class GameState {
 
         int numRows = board.length;
         int numCols = board[0].length;
+
         int topleft = 0;
         int topright = 0;
         int bottomleft = 0;
@@ -57,9 +64,32 @@ public class GameState {
         int top = 0;
         int bottom = 0;
 
+        int topleftRowIndex = 0;
+        int topleftColumnIndex = 0;
+        int toprightRowIndex = 0;
+        int toprightColumnIndex = 0;
+
+        int bottomleftRowIndex = 0;
+        int bottomleftColumnIndex = 0;
+        int bottomrightRowIndex = 0;
+        int bottomrightColumnIndex = 0;
+
+        int leftRowIndex = 0;
+        int leftColumnIndex = 0;
+        int rightRowIndex = 0;
+        int rightColumnIndex = 0;
+
+        int topRowIndex = 0;
+        int topColumnIndex = 0;
+        int bottomRowIndex = 0;
+        int bottomColumnIndex = 0;
+
+
         for (int i = row-1, j = col-1; i >= 0 && j >= 0 ; i--, j--) {
             if (board[i][j] == charAtPosition) {
                 bottomleft++;
+                bottomleftRowIndex=i;
+                bottomleftColumnIndex=j;
             } else {
                 break;
             }
@@ -67,6 +97,8 @@ public class GameState {
         for (int i = row-1, j = col+1; i >= 0 && j < numCols; i--, j++) {
             if (board[i][j] == charAtPosition) {
                 topleft++;
+                topleftRowIndex=i;
+                topleftColumnIndex=j;
             } else {
                 break;
             }
@@ -74,13 +106,17 @@ public class GameState {
         for (int i = row+1, j = col-1; i < numRows && j >= 0 ; i++, j--) {
             if (board[i][j] == charAtPosition) {
                 bottomright++;
+                bottomrightRowIndex=i;
             } else {
+                bottomrightColumnIndex=j;
                 break;
             }
         }
         for (int i = row+1, j = col+1; i < numRows && j < numCols ; i++, j++) {
             if (board[i][j] == charAtPosition) {
                 topright++;
+                toprightRowIndex=i;
+                toprightColumnIndex=j;
             } else {
                 break;
             }
@@ -89,6 +125,8 @@ public class GameState {
         for (int i = row, j = col+1; j < numCols ; j++) {
             if (board[i][j] == charAtPosition) {
                 right++;
+                rightRowIndex=i;
+                rightColumnIndex=j;
             } else {
                 break;
             }
@@ -97,6 +135,8 @@ public class GameState {
         for (int i = row+1, j = col; i < numRows ; i++) {
             if (board[i][j] == charAtPosition) {
                 top++;
+                topRowIndex=i;
+                topColumnIndex=j;
             } else {
                 break;
             }
@@ -105,6 +145,8 @@ public class GameState {
         for (int i = row, j = col-1; j >=0 ;  j--) {
             if (board[i][j] == charAtPosition) {
                 left++;
+                leftRowIndex=i;
+                leftColumnIndex=j;
             } else {
                 break;
             }
@@ -113,12 +155,37 @@ public class GameState {
         for (int i = row-1, j = col; i >=0 ; i--) {
             if (board[i][j] == charAtPosition) {
                 bottom++;
+                bottomRowIndex=i;
+                bottomColumnIndex=j;
             } else {
                 break;
             }
         }
-        return topleft + bottomright +1 >=numRows || topright + bottomleft +1>= numCols
-                || left+right +1>=numRows||top+bottom +1>=numCols;
+
+        if(topleft + bottomright +1 >=numRows ){
+            winningSequence = new WinningPosition(new Cell(topleftRowIndex,topleftColumnIndex),
+                    new Cell(bottomrightRowIndex,bottomrightColumnIndex));
+            return true;
+        }
+
+        if(topright + bottomleft +1 >=numRows ){
+            winningSequence = new WinningPosition(new Cell(bottomleftRowIndex,bottomColumnIndex),
+                    new Cell(toprightRowIndex,toprightColumnIndex));
+            return true;
+        }
+
+        if(top+bottom +1>=numCols){
+            winningSequence = new WinningPosition(new Cell(topRowIndex,topColumnIndex),
+                    new Cell(bottomRowIndex,bottomColumnIndex));
+            return true;
+        }
+
+        if(left+right +1>=numRows){
+            winningSequence = new WinningPosition(new Cell(leftRowIndex,leftColumnIndex),
+                    new Cell(rightRowIndex,rightColumnIndex));
+            return true;
+        }
+        return false;
     }
 
 
@@ -141,4 +208,13 @@ public class GameState {
         }
       return false;
   }
+
+    public WinningPosition getWinningSequence() {
+        return winningSequence;
+    }
+
+    public boolean isAtEnd() {
+        return isTie() || (winner!=null);
+    }
+
 }

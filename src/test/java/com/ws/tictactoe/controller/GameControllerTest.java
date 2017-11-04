@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -38,7 +39,7 @@ public class GameControllerTest extends GameMvcTests{
     @Before
     public void setUp(){
         GameState initialState = GameState.builder()
-                .nextPlayer(new Player(GameSign.X.name(),new Cell(1,1)))
+                .nextPlayer(new Player(GameSign.X.name()))
                 .build();
         game= new Game(initialState);
         game = gameRepository.save(game);
@@ -77,6 +78,25 @@ public class GameControllerTest extends GameMvcTests{
                 .content(turnJson))
                 .andDo(print())
                 .andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void deleteGame() throws Exception {
+        String turnJson = JsonBuilderFactory.buildObject()
+                .addObject("move")
+                .add("row", 1)
+                .add("column", 1)
+                .end()
+                .toString();
+
+        mockMvc.perform(post("/games/{id}/turn",game.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(turnJson));
+
+        mockMvc.perform(delete("/games/"+game.getId()))
+                .andExpect(status().isNoContent());
+
 
     }
 

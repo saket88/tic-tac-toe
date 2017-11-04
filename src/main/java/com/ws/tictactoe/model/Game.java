@@ -26,6 +26,6 @@ public class Game {
     }
 
     public Move getLastMove() {
-        return new Move(getState().getNextPlayer().getGameSign(),getState().getNextPlayer().getLatestMove());
+        return state.getLastMove();
     }
 }
