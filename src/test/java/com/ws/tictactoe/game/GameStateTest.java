@@ -236,17 +236,17 @@ public class GameStateTest extends GameUnitTest{
 
     @Test
     public void determineTheStartAndEndIndexWhenAWin(){
-        Cell cell = new Cell(1,2);
+        Cell cell = new Cell(2,0);
 
         GameSign[][] boardTillNow = {
                 {GameSign.O, GameSign.O, GameSign.X},
-                {GameSign.O, GameSign.X, GameSign.Blank},
-                {GameSign.X, GameSign.O, GameSign.X}
+                {GameSign.O, GameSign.X, GameSign.O},
+                {GameSign.Blank, GameSign.X, GameSign.X}
         };
 
         underTest =GameState.builder()
                 .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name()))
+                .nextPlayer(new Player(GameSign.O.name()))
                 .build();
 
 
@@ -255,9 +255,9 @@ public class GameStateTest extends GameUnitTest{
 
 
         assertThat(underTest.getWinningSequence().getStart().getRow(),is(2));
-        assertThat(underTest.getWinningSequence().getStart().getColumn(),is(2));
+        assertThat(underTest.getWinningSequence().getStart().getColumn(),is(0));
         assertThat(underTest.getWinningSequence().getEnd().getRow(),is(0));
-        assertThat(underTest.getWinningSequence().getEnd().getColumn(),is(2));
+        assertThat(underTest.getWinningSequence().getEnd().getColumn(),is(0));
 
     }
 }
