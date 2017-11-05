@@ -122,8 +122,7 @@ function GameController(GAME_EVENTS, PIECES, gameService, $scope, $q, $mdToast, 
                     play();
                 } else if (result.gameEnded) {
                     updateStats(result);
-                    gameService.endCurrentGame();
-                        endGame();
+                    endGame();
                 }
             })
             .catch(function(response) {

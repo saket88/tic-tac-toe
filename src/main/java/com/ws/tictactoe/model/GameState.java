@@ -163,24 +163,62 @@ public class GameState {
         }
 
         if(topleft + bottomright +1 >=numRows ){
+
+            if(topleftRowIndex==0 && topleftColumnIndex ==0){
+                topleftRowIndex = row;
+                topleftColumnIndex =col;
+            }
+
+            else if(bottomrightRowIndex == 0 && bottomrightColumnIndex == 0){
+                bottomrightRowIndex = row;
+                bottomrightColumnIndex = col;
+            }
             winningSequence = new WinningPosition(new Cell(topleftRowIndex,topleftColumnIndex),
                     new Cell(bottomrightRowIndex,bottomrightColumnIndex));
             return true;
         }
 
-        if(topright + bottomleft +1 >=numRows ){
-            winningSequence = new WinningPosition(new Cell(bottomleftRowIndex,bottomColumnIndex),
+        if(topright + bottomleft +1 >=numCols){
+            if(bottomleftRowIndex==0 && bottomleftColumnIndex ==0){
+                bottomleftRowIndex = row;
+                bottomleftColumnIndex =col;
+            }
+
+            else if(toprightRowIndex == 0 && toprightColumnIndex == 0){
+                toprightRowIndex = row;
+                toprightColumnIndex = col;
+            }
+            winningSequence = new WinningPosition(new Cell(bottomleftRowIndex,bottomleftColumnIndex),
                     new Cell(toprightRowIndex,toprightColumnIndex));
             return true;
         }
 
         if(top+bottom +1>=numCols){
+
+            if(topRowIndex==0 && topColumnIndex ==0){
+                topRowIndex = row;
+                topColumnIndex =col;
+            }
+
+            else if(bottomRowIndex == 0 && bottomColumnIndex == 0){
+                bottomRowIndex = row;
+                bottomColumnIndex = col;
+            }
             winningSequence = new WinningPosition(new Cell(topRowIndex,topColumnIndex),
                     new Cell(bottomRowIndex,bottomColumnIndex));
             return true;
         }
 
         if(left+right +1>=numRows){
+            if(leftRowIndex==0 && leftColumnIndex ==0){
+                leftRowIndex = row;
+                leftColumnIndex =col;
+            }
+
+            else if(rightRowIndex == 0 && rightColumnIndex == 0){
+                rightRowIndex = row;
+                rightColumnIndex = col;
+            }
             winningSequence = new WinningPosition(new Cell(leftRowIndex,leftColumnIndex),
                     new Cell(rightRowIndex,rightColumnIndex));
             return true;
