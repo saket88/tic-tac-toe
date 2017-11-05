@@ -53,8 +53,15 @@ function GameController(GAME_EVENTS, PIECES, gameService, $scope, $q, $mdToast, 
          }
 
          function endGame() {
-
-             return $q.when();
+              vm.gameExists = false;
+              vm.paused = false;
+              vm.currentGame = undefined;
+              deferredMove = undefined;
+              if (gameService.currentGame) {
+                       return gameService.endCurrentGame();
+                     } else {
+                         return $q.when();
+               }
          }
 
 

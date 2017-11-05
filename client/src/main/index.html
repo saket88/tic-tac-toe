@@ -35,7 +35,7 @@
 
         <md-button class="md-warn md-raised" ng-class="{'md-icon-button': vm.screenIsSmall}"
                    ng-disabled="!(vm.gameExists)"
-                   >
+                   ng-click="vm.endGame()">
             <md-icon md-svg-icon="stop"></md-icon> <span ng-hide="vm.screenIsSmall">End</span>
         </md-button>
     </div>

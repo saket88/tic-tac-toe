@@ -58,6 +58,7 @@ function board(GAME_EVENTS, PIECES, $window, $timeout, $log) {
 
         canvas.onclick=onClickOfCanvas;
         $scope.$on(GAME_EVENTS.MOVE_COMPLETED, onMoveCompleted);
+        $scope.$on(GAME_EVENTS.GAME_STARTED, onGameStarted);
 
         //---------------------------------------------------//
 
@@ -219,6 +220,15 @@ function board(GAME_EVENTS, PIECES, $window, $timeout, $log) {
                       ctx.lineWidth = 3;
                       ctx.stroke();
           }
+           function onGameStarted(event, game){
+                       numRows = game.board.length;
+                       numCols = game.board[0].length;
+                       board = _.cloneDeep(game.board);
+
+                       resizeCanvas();
+                       drawGameBoard();
+
+           }
 
     }
 }
