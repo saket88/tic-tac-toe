@@ -199,7 +199,7 @@ function board(GAME_EVENTS, PIECES, $window, $timeout, $log) {
                        ctx.moveTo(startX, startY);
                        ctx.lineTo(endX, endY);
 
-                       ctx.strokeStyle = "yellow";
+                       ctx.strokeStyle = "green";
                        ctx.lineWidth = 4;
                        ctx.stroke();
           }
