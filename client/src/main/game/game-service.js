@@ -43,9 +43,8 @@ function gameService($http, $q) {
         this.playTurn = playTurn;
 
         function playTurn(selectedMove) {
-            return $http.post("games/"+self.id+"/turn", {
-                move: selectedMove
-            }).then(function(response) {
+            return $http.post("games/"+self.id+"/turn", selectedMove)
+            .then(function(response) {
                 _.extend(self, response.data);
                 self.board = response.data.board;
                 return response.data;
