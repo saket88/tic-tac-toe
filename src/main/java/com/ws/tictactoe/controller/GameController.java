@@ -30,7 +30,7 @@ public class GameController {
                 .board(initializeGameBoard())
                 .build();
 
-        return gameRepository.save(game);
+        return gameRepository.create(game);
     }
 
     @RequestMapping(value = "/{id}/turn",method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -38,7 +38,7 @@ public class GameController {
                             @PathVariable String id) {
         Game game = gameRepository.findById(id);
         game.playTurn(cell);
-        return gameRepository.save(game);
+        return gameRepository.create(game);
     }
 
 

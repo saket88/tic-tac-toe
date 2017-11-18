@@ -19,7 +19,7 @@ public class GameRepositoryTest extends GameUnitTest{
     @Test
     public void saveTheGame(){
 
-        Game game = underTest.save(Game.builder()
+        Game game = underTest.create(Game.builder()
         .nextPlayer(new Player("O"))
         .build());
 

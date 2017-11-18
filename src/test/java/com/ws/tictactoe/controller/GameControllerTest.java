@@ -40,7 +40,7 @@ public class GameControllerTest extends GameMvcTests{
                 .nextPlayer(new Player(GameSign.X.name()))
                 .build();
 
-        game = gameRepository.save(gameInit);
+        game = gameRepository.create(gameInit);
 
     }
 

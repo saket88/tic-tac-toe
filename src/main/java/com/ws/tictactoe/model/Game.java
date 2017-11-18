@@ -25,7 +25,7 @@ public class Game {
     GameSign[][] board;
 
     @Getter
-    Player nextPlayer;
+    private Player nextPlayer;
 
 
     @Getter
