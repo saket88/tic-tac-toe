@@ -2,7 +2,6 @@ package com.ws.tictactoe.repository;
 
 import com.ws.tictactoe.GameUnitTest;
 import com.ws.tictactoe.model.Game;
-import com.ws.tictactoe.model.GameState;
 import com.ws.tictactoe.model.Player;
 import com.ws.tictactoe.repo.GameRepository;
 import org.junit.Test;
@@ -20,12 +19,12 @@ public class GameRepositoryTest extends GameUnitTest{
     @Test
     public void saveTheGame(){
 
-        Game game = underTest.save(new Game(GameState.builder()
+        Game game = underTest.save(Game.builder()
         .nextPlayer(new Player("O"))
-        .build()));
+        .build());
 
         assertThat(game,is(underTest.findById(game.getId())));
-        assertThat(game.getState().getNextPlayer().getGameSign(),is(O));
+        assertThat(game.getNextPlayer().getGameSign(),is(O));
 
     }
 }

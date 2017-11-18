@@ -2,13 +2,13 @@ package com.ws.tictactoe.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ws.tictactoe.GameMvcTests;
-import com.ws.tictactoe.generator.GameFactory;
-import com.ws.tictactoe.model.*;
+import com.ws.tictactoe.model.Game;
+import com.ws.tictactoe.model.GameSign;
+import com.ws.tictactoe.model.Player;
 import com.ws.tictactoe.repo.GameRepository;
 import org.jglue.fluentjson.JsonBuilderFactory;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
@@ -25,8 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class GameControllerTest extends GameMvcTests{
 
 
-    @Mock
-    private GameFactory gameFactory;
 
     @Autowired
     private GameRepository gameRepository;
@@ -38,11 +36,11 @@ public class GameControllerTest extends GameMvcTests{
 
     @Before
     public void setUp(){
-        GameState initialState = GameState.builder()
+        Game gameInit = Game.builder()
                 .nextPlayer(new Player(GameSign.X.name()))
                 .build();
-        game= new Game(initialState);
-        game = gameRepository.save(game);
+
+        game = gameRepository.save(gameInit);
 
     }
 
@@ -51,7 +49,7 @@ public class GameControllerTest extends GameMvcTests{
 
         String gameParams =
                 JsonBuilderFactory.buildObject()
-                        .add("firstPlayer", GameSign.O.toString())
+                        .add("gameSign", GameSign.O.toString())
                         .end()
                         .toString();
 
@@ -61,16 +59,14 @@ public class GameControllerTest extends GameMvcTests{
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.nextPlayer.gameSign").value(GameSign.O.toString()));
+                .andExpect(jsonPath("$.currentPlayer.gameSign").value(GameSign.O.toString()));
     }
 
     @Test
     public void playTurn() throws Exception {
         String turnJson = JsonBuilderFactory.buildObject()
-                .addObject("move")
                 .add("row", 1)
                 .add("column", 1)
-                .end()
                 .toString();
 
         mockMvc.perform(post("/games/{id}/turn",game.getId())
@@ -84,10 +80,8 @@ public class GameControllerTest extends GameMvcTests{
     @Test
     public void deleteGame() throws Exception {
         String turnJson = JsonBuilderFactory.buildObject()
-                .addObject("move")
                 .add("row", 1)
                 .add("column", 1)
-                .end()
                 .toString();
 
         mockMvc.perform(post("/games/{id}/turn",game.getId())

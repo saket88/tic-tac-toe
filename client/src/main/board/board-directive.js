@@ -164,7 +164,7 @@ function board(GAME_EVENTS, PIECES, $window, $timeout, $log) {
         function onMoveCompleted(event, result) {
                     lastTurnResult = result;
 
-                    board[result.move.cell.row][result.move.cell.column] = result.move.piece;
+                    board = result.board;
 
                     if (result.move.piece === PIECES.O) {
                         drawCircle(result.move.cell);
@@ -173,7 +173,7 @@ function board(GAME_EVENTS, PIECES, $window, $timeout, $log) {
                     }
 
                     if (result.winningSequence) {
-                        drawLine(result.winningSequence.start, result.winningSequence.end);
+                        drawLine(result.startWinCoordinates, result.endWinCoordinates);
                     }
          }
 

@@ -19,7 +19,6 @@ function GameController(GAME_EVENTS, PIECES, gameService, $scope, $q, $mdToast, 
     function init() {
         vm.gameExists = false;
         vm.screenIsSmall = screenIsSmall();
-        resetStats();
 
         return $q.all({
 
@@ -33,22 +32,11 @@ function GameController(GAME_EVENTS, PIECES, gameService, $scope, $q, $mdToast, 
 
     }
 
-    function resetStats() {
-            vm.gameStats = {
-                currentRound: 0,
-                ties: 0,
-                wins: {}
-            };
-            vm.gameStats.wins[PIECES.X] = 0;
-            vm.gameStats.wins[PIECES.O] = 0;
 
-            return $q.when();
-        }
 
         function startGame() {
 
-           return resetStats()
-                       .then(initRound)
+           return      initRound()
                        .then(play);
          }
 

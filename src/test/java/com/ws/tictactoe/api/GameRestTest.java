@@ -1,7 +1,8 @@
 package com.ws.tictactoe.api;
 
 
-import com.ws.tictactoe.model.GameDTO;
+
+import com.ws.tictactoe.model.Game;
 import com.ws.tictactoe.repo.GameRepository;
 import org.jglue.fluentjson.JsonBuilderFactory;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class GameRestTest extends GameRestSteps {
 
     @Test
     public void createGame() {
-        ResponseEntity<GameDTO> responseEntity = createRestGame(restTemplate,"/games");
+        ResponseEntity<Game> responseEntity = createRestGame(restTemplate,"/games");
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.CREATED));
     }
 
@@ -35,13 +36,11 @@ public class GameRestTest extends GameRestSteps {
 
     @Test
     public void onAPlayersTurn(){
-        ResponseEntity<GameDTO> responseEntity = createRestGame(restTemplate,"/games");
+        ResponseEntity<Game> responseEntity = createRestGame(restTemplate,"/games");
         String gameId = responseEntity.getBody().getId();
         String turnJson = JsonBuilderFactory.buildObject()
-                .addObject("move")
                 .add("row", 1)
                 .add("column", 1)
-                .end()
                 .toString();
 
         assertThat(postFor(restTemplate,turnJson,"/games/"+gameId+"/turn").getStatusCode(),is(HttpStatus.OK));
