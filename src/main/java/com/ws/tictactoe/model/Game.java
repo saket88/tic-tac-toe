@@ -11,13 +11,13 @@ import static java.util.stream.IntStream.range;
 
 @AllArgsConstructor
 @Builder
-//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE,getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class Game {
 
 
     public Game(){
 
     }
+
     @Getter
     private final String id = UUID.randomUUID().toString();
 
@@ -48,7 +48,6 @@ public class Game {
     public void playTurn(Cell cell) {
         int row=cell.getRow();
         int column = cell.getColumn();
-        initializeGameBoard();
         GameSign[][] gameSigns = getBoard();
         GameSign currentGameSign = getNextPlayer().getGameSign();
         gameSigns[row][column] = currentGameSign;
@@ -96,8 +95,8 @@ public class Game {
                 && board[i][j]==board[i+1][j-1]
                 && board[i][j]==board[i-1][j+1]) {
             hasWinner[0] = true;
-            startWinCoordinates=   new Cell(rows - i, cols - j-2);
-            endWinCoordinates=    new Cell(rows - i-2, cols - j);
+            startWinCoordinates =   new Cell(rows - i, cols - j-2);
+            endWinCoordinates   =    new Cell(rows - i-2, cols - j);
         }
     }
 
@@ -110,8 +109,8 @@ public class Game {
                 && board[i][j]==board[i-1][j-1]
                 && board[i][j]==board[i-2][j-2]) {
             hasWinner[0] = true;
-            startWinCoordinates=   new Cell(rows - i-1,cols-j-1);
-            endWinCoordinates=    new Cell(rows - 1, cols - 1);
+            startWinCoordinates =   new Cell(rows - i-1,cols-j-1);
+            endWinCoordinates   =    new Cell(rows - 1, cols - 1);
         }
     }
 
@@ -121,8 +120,8 @@ public class Game {
         GameSign thirdSign=board[rows-3][j];
         if(hasMatchingSigns(firstSign, secondSign, thirdSign)) {
             hasWinner[0] = true;
-            startWinCoordinates=   new Cell(i,j);
-            endWinCoordinates=    new Cell(rows -i- 1, j);
+            startWinCoordinates =   new Cell(i,j);
+            endWinCoordinates   =    new Cell(rows -i- 1, j);
         }
     }
 
@@ -147,17 +146,6 @@ public class Game {
 
     }
 
-
-    private void initializeGameBoard() {
-        if (board == null) {
-            board = new GameSign[][]{
-                    {GameSign.Blank, GameSign.Blank, GameSign.Blank},
-                    {GameSign.Blank, GameSign.Blank, GameSign.Blank},
-                    {GameSign.Blank, GameSign.Blank, GameSign.Blank}
-
-            };
-        }
-    }
 
     private boolean hasBlank() {
         for (GameSign[] aBoard : board) {

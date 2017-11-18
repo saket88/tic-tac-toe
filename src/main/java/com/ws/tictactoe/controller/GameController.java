@@ -3,6 +3,7 @@ package com.ws.tictactoe.controller;
 
 import com.ws.tictactoe.model.Cell;
 import com.ws.tictactoe.model.Game;
+import com.ws.tictactoe.model.GameSign;
 import com.ws.tictactoe.model.Player;
 import com.ws.tictactoe.repo.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class GameController {
 
         Game game = Game.builder()
                 .nextPlayer(nextPlayer)
+                .board(initializeGameBoard())
                 .build();
 
         return gameRepository.save(game);
@@ -52,7 +54,17 @@ public class GameController {
         this.gameRepository = gameRepository;
     }
 
+    private GameSign[][] initializeGameBoard() {
+        GameSign[][] board;
+        board = new GameSign[][]{
+                    {GameSign.Blank, GameSign.Blank, GameSign.Blank},
+                    {GameSign.Blank, GameSign.Blank, GameSign.Blank},
+                    {GameSign.Blank, GameSign.Blank, GameSign.Blank}
+        };
 
+            return board;
+
+    }
 
 
 }
