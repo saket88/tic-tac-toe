@@ -209,6 +209,51 @@ public class GameStateTest extends GameUnitTest{
 
     }
 
+
+
+    @Test
+    public void determineWinnerWhenAnExpectedMoveIsAtLeftDiagonal(){
+        Cell cell = new Cell(0,0);
+
+        GameSign[][] boardTillNow = {
+                {GameSign.Blank, GameSign.X, GameSign.Blank},
+                {GameSign.Blank, GameSign.O, GameSign.Blank},
+                {GameSign.Blank, GameSign.X, GameSign.O}
+        };
+
+        underTest = GameState.builder()
+                .board(boardTillNow)
+                .nextPlayer(new Player(GameSign.O.name()))
+                .build();
+
+
+        underTest.update(cell);
+
+        assertThat(underTest.getWinner(),is(GameSign.O));
+
+    }
+
+    @Test
+    public void determineWinnerWhenAnExpectedMoveIsAtRightDiagonal(){
+        Cell cell = new Cell(2,0);
+
+        GameSign[][] boardTillNow = {
+                {GameSign.Blank, GameSign.X, GameSign.O},
+                {GameSign.Blank, GameSign.O, GameSign.Blank},
+                {GameSign.Blank, GameSign.X, GameSign.Blank}
+        };
+
+        underTest = GameState.builder()
+                .board(boardTillNow)
+                .nextPlayer(new Player(GameSign.O.name()))
+                .build();
+
+
+        underTest.update(cell);
+
+        assertThat(underTest.getWinner(),is(GameSign.O));
+
+    }
     @Test
     public void determineATie(){
         Cell cell = new Cell(2,0);
