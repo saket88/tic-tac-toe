@@ -40,13 +40,19 @@ public class Game {
     @Getter
     private Cell endWinCoordinates;
 
+    @Getter
+    private Cell move;
+
 
 
     public void playTurn(Cell cell) {
+        int row=cell.getRow();
+        int column = cell.getColumn();
         initializeGameBoard();
         GameSign[][] gameSigns = getBoard();
         GameSign currentGameSign = getNextPlayer().getGameSign();
-        gameSigns[cell.getRow()][cell.getColumn()] = currentGameSign;
+        gameSigns[row][column] = currentGameSign;
+        move=new Cell(row,column);
         nextPlayer = new Player(nextPlayer.getGameSign().toggle().name());
         determineResult(currentGameSign);
 
@@ -77,12 +83,18 @@ public class Game {
                     leftDiagonal(hasWinner, rows, cols,i, j);
                     rightDiagonal(hasWinner,rows,cols,i,j);
 
-                });
+                 });
         return hasWinner[0];
     }
 
     private void rightDiagonal(boolean[] hasWinner, int rows,int cols, int i, int j) {
-        if(i==rows-2  && j==cols-2 && board[i][j]==board[i+1][j-1] && board[i][j]==board[i-1][j+1]) {
+        if( i==rows-2
+                && j==cols-2
+                && ( board[i][j]!=GameSign.Blank
+                && board[i+1][j-1]!=GameSign.Blank
+                && board[i-1][j+1]!=GameSign.Blank)
+                && board[i][j]==board[i+1][j-1]
+                && board[i][j]==board[i-1][j+1]) {
             hasWinner[0] = true;
             startWinCoordinates=   new Cell(rows - i, cols - j-2);
             endWinCoordinates=    new Cell(rows - i-2, cols - j);
@@ -90,7 +102,13 @@ public class Game {
     }
 
     private void leftDiagonal(boolean[] hasWinner, int rows, int cols ,int i, int j) {
-        if(i==rows-1 && (i==j) && board[i][j]==board[i-1][j-1] && board[i][j]==board[i-2][j-2]) {
+
+        if(i==rows-1 && (i==j)
+                && board[i][j]!=GameSign.Blank
+                && board[i-1][j-1]!=GameSign.Blank
+                && board[i-2][j-2]!=GameSign.Blank
+                && board[i][j]==board[i-1][j-1]
+                && board[i][j]==board[i-2][j-2]) {
             hasWinner[0] = true;
             startWinCoordinates=   new Cell(rows - i-1,cols-j-1);
             endWinCoordinates=    new Cell(rows - 1, cols - 1);
@@ -98,15 +116,29 @@ public class Game {
     }
 
     private void column(boolean[] hasWinner, int rows, int i, int j) {
-        if(board[rows-1][j]==board[rows-3][j] && board[rows-1][j]==board[rows-2][j]) {
+        GameSign firstSign=board[rows-1][j];
+        GameSign secondSign=board[rows-2][j];
+        GameSign thirdSign=board[rows-3][j];
+        if(hasMatchingSigns(firstSign, secondSign, thirdSign)) {
             hasWinner[0] = true;
             startWinCoordinates=   new Cell(i,j);
             endWinCoordinates=    new Cell(rows -i- 1, j);
         }
     }
 
+    private boolean hasMatchingSigns(GameSign firstSign, GameSign secondSign, GameSign thirdSign) {
+        return firstSign!= GameSign.Blank
+                && secondSign!=GameSign.Blank
+                && thirdSign!=GameSign.Blank
+                && firstSign==secondSign
+                && firstSign==thirdSign;
+    }
+
     private void row(boolean[] hasWinner, int cols, int i, int j) {
-        if(board[i][cols-1]==board[i][cols-3] && board[i][cols-1]==board[i][cols-2]){
+        GameSign firstSign=board[i][cols-1];
+        GameSign secondSign=board[i][cols-2];
+        GameSign thirdSign=board[i][cols-3];
+        if(hasMatchingSigns(firstSign, secondSign, thirdSign)){
             hasWinner[0] = true;
             startWinCoordinates=   new Cell(i,j);
             endWinCoordinates=    new Cell(i, cols-j-1);

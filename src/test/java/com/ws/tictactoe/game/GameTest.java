@@ -23,20 +23,7 @@ public class GameTest extends GameUnitTest{
     };
 
 
-    @Test
-    public void updateAState(){
-        Cell cell = new Cell(1,1);
-        underTest = Game.builder()
-                .board(boardTillNow)
-                .nextPlayer(new Player(GameSign.X.name()))
-                .build();
 
-        underTest.playTurn(cell);
-
-        assertThat(underTest.getBoard()[1][1],is(GameSign.X));
-
-
-    }
 
     @Test
     public void determineWinnerWhenAnExpectedMoveisAtBottomRightDiagonal(){

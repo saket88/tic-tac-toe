@@ -22,10 +22,10 @@ public class GameController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public Game create(@RequestBody @Validated Player player) {
+    public Game create(@RequestBody @Validated Player nextPlayer) {
 
         Game game = Game.builder()
-                .nextPlayer(player)
+                .nextPlayer(nextPlayer)
                 .build();
 
         return gameRepository.save(game);

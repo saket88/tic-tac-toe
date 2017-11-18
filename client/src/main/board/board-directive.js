@@ -166,13 +166,13 @@ function board(GAME_EVENTS, PIECES, $window, $timeout, $log) {
 
                     board = result.board;
 
-                    if (result.move.piece === PIECES.O) {
-                        drawCircle(result.move.cell);
-                    } else if (result.move.piece === PIECES.X) {
-                        drawCross(result.move.cell);
+                    if (result.nextPlayer.gameSign === PIECES.X) {
+                        drawCircle(result.move);
+                    } else if (result.nextPlayer.gameSign=== PIECES.O) {
+                        drawCross(result.move);
                     }
 
-                    if (result.winningSequence) {
+                    if (result.winner) {
                         drawLine(result.startWinCoordinates, result.endWinCoordinates);
                     }
          }

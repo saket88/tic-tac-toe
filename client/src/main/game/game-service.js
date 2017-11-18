@@ -44,7 +44,6 @@ function gameService($http, $q) {
 
         function playTurn(selectedMove) {
             return $http.post("games/"+self.id+"/turn", {
-                turnNumber: self.turnNumber,
                 move: selectedMove
             }).then(function(response) {
                 _.extend(self, response.data);
