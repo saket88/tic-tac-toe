@@ -24,7 +24,7 @@ function GameController(GAME_EVENTS, PIECES, gameService, $scope, $q, $mdToast, 
 
             PIECES: PIECES,
               gameConfig: {
-                            firstPlayer: "X"
+                            nextPlayer: "X"
               }
     }).then(function(data) {
                   _.extend(vm, data);
