@@ -6,7 +6,7 @@ var _ = require("lodash");
 angular.module("ticTacToe")
     .factory("gameService", gameService);
 
-function gameService($http, $q) {
+function gameService($stomp,$http, $q) {
 
     var service = {
         currentGame: undefined,
@@ -19,12 +19,22 @@ function gameService($http, $q) {
     function startNewGame(gameParams) {
         return service.endCurrentGame()
             .then(function() {
-                return $http.post("games", gameParams);
-            })
-            .then(function(response) {
-                service.currentGame = new Game(response.data);
-            });
+            var response =[];
+            var deferred=$q.defer();
+             $stomp.connect('http://localhost:8080/games-websocket', {})
+             .then(function (frame) {
+             var subscription = $stomp.subscribe('/topic/game',
+                                function (payload, headers, res) {
+                                    service.currentGame = new Game(payload);
+                                    deferred.resolve();
+                            });
+                   $stomp.send('/ticTacToe/create', gameParams);
+                });
+                return deferred.promise;
+
+        });
     }
+
 
     function endCurrentGame() {
         if (!service.currentGame) {

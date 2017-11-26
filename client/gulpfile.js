@@ -22,7 +22,6 @@ var browserifiers = require('./browserifiers');
 var packageJson = require('./package.json');
 
 
-
 var DEV = "development";
 var PROD = "production";
 var context = {
@@ -116,7 +115,7 @@ gulp.task('watch', function (cb) {
 gulp.task('build', function (cb) {
     runSequence(
         'clean',
-        [ 'js-libs', 'js-app','html', 'resources', 'lib-resources'],
+        ['js-libs', 'js-app','external-js','html', 'resources', 'lib-resources'],
         cb);
 });
 
@@ -147,6 +146,13 @@ gulp.task('lib-resources', function () {
     return gulp.src(projectPaths.libResources)
         .pipe(gulp.dest(projectPaths.build + '/resources'));
 });
+
+
+gulp.task('external-js', function () {
+    return gulp.src(projectPaths.externalJS)
+        .pipe(gulp.dest(projectPaths.build));
+});
+
 
 
 

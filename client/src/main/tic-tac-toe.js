@@ -2,6 +2,7 @@
 
 var angular = require("angular");
 require("angular-material");
+require("ng-stomp");
 
 var PIECES = {
     X: "X",
@@ -17,7 +18,7 @@ var GAME_EVENTS = {
 
 
 angular
-    .module("ticTacToe", ["ngMaterial"])
+    .module("ticTacToe", ["ngMaterial","ngStomp"])
     .constant("GAME_EVENTS", GAME_EVENTS)
     .constant("PIECES", PIECES)
     .config(configureIcons)
