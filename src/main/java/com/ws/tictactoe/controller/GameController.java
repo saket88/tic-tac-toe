@@ -27,11 +27,11 @@ public class GameController {
                 .board(initializeGameBoard())
                 .build();
 
-        return gameRepository.create(game);
+        return gameRepository.getLatestGameEntry()!=null ?gameRepository.getLatestGameEntry().getValue():gameRepository.create(game);
     }
 
 //    @RequestMapping(value = "/{id}/turn",method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public Game playTurn(@RequestBody @Validated Cell cell,
+//    public Game playTurn(@RequestBody @Valid   hyhhg```ated Cell cell,
 //                            @PathVariable String id) {
 //        Game game = gameRepository.findById(id);
 //        game.playTurn(cell);
