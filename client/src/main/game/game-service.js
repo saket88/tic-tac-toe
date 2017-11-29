@@ -49,16 +49,25 @@ function gameService($stomp,$http, $q) {
     function Game(initialGameData) {
         var self = this;
         _.extend(self, initialGameData);
+        var deferred=$q.defer();
 
         this.playTurn = playTurn;
 
         function playTurn(selectedMove) {
-            return $http.post("games/"+self.id+"/turn", selectedMove)
-            .then(function(response) {
-                _.extend(self, response.data);
-                self.board = response.data.board;
-                return response.data;
-            });
+
+         selectedMove.id=self.id;
+         $stomp.connect('http://localhost:8080/games-websocket', {})
+                     .then(function (frame) {
+                     var subscription = $stomp.subscribe('/topic/play',
+                        function (payload, headers, res) {
+                             _.extend(self, payload);
+                             self.board = payload.board;
+                             deferred.resolve(payload);
+                                    });
+                           $stomp.send('/ticTacToe/turn', selectedMove);
+                        });
+               return deferred.promise;
+
         }
     }}
 

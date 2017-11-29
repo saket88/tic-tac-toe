@@ -1,6 +1,7 @@
 package com.ws.tictactoe.controller;
 
 
+import com.ws.tictactoe.model.Cell;
 import com.ws.tictactoe.model.Game;
 import com.ws.tictactoe.model.GameSign;
 import com.ws.tictactoe.model.Player;
@@ -14,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
-@SendTo("/topic/game")
 public class GameController {
 
 
     private GameRepository gameRepository;
 
+    @SendTo("/topic/game")
     @MessageMapping("/create")
     public Game create(@RequestBody @Validated Player nextPlayer) {
         Game game = Game.builder()
@@ -30,15 +31,15 @@ public class GameController {
         return gameRepository.getLatestGameEntry()!=null ?gameRepository.getLatestGameEntry().getValue():gameRepository.create(game);
     }
 
-//    @RequestMapping(value = "/{id}/turn",method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public Game playTurn(@RequestBody @Valid   hyhhg```ated Cell cell,
-//                            @PathVariable String id) {
-//        Game game = gameRepository.findById(id);
-//        game.playTurn(cell);
-//        return gameRepository.create(game);
-//    }
-//
-//
+    @SendTo("/topic/play")
+    @MessageMapping("/turn")
+    public Game playTurn(@RequestBody @Validated Cell cell) {
+        Game game = gameRepository.findById(cell.getId());
+        game.playTurn(cell);
+        return gameRepository.create(game);
+    }
+
+
 //    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
 //    @ResponseStatus(HttpStatus.NO_CONTENT)
 //    public void delete(@PathVariable String id) {
