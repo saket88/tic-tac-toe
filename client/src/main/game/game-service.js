@@ -6,7 +6,7 @@ var _ = require("lodash");
 angular.module("ticTacToe")
     .factory("gameService", gameService);
 
-function gameService($stomp,$http, $q) {
+function gameService(GAME_EVENTS,$rootScope,$stomp,$http, $q) {
 
     var service = {
         currentGame: undefined,
@@ -37,13 +37,20 @@ function gameService($stomp,$http, $q) {
 
 
     function endCurrentGame() {
+    var deferred=$q.defer();
         if (!service.currentGame) {
             return $q.when();
         }
-        return $http.delete("games/"+service.currentGame.id)
-            .then(function() {
-                service.currentGame = undefined;
-            });
+        $stomp.connect('http://localhost:8080/games-websocket', {})
+                             .then(function (frame) {
+                             var subscription = $stomp.subscribe('/topic/game',
+                                function (payload, headers, res) {
+                                service.currentGame = undefined;
+                                deferred.resolve();
+                                            });
+                                   $stomp.send('/ticTacToe/delete/'+service.currentGame.id, {});
+                                });
+                       return deferred.promise;
     }
 
     function Game(initialGameData) {
@@ -62,6 +69,7 @@ function gameService($stomp,$http, $q) {
                         function (payload, headers, res) {
                              _.extend(self, payload);
                              self.board = payload.board;
+                             $rootScope.$broadcast(GAME_EVENTS.MOVE_COMPLETED, service.currentGame);
                              deferred.resolve(payload);
                                     });
                            $stomp.send('/ticTacToe/turn', selectedMove);

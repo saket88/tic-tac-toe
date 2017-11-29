@@ -7,6 +7,7 @@ import com.ws.tictactoe.model.GameSign;
 import com.ws.tictactoe.model.Player;
 import com.ws.tictactoe.repo.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,9 @@ public class GameController {
                 .board(initializeGameBoard())
                 .build();
 
-        return gameRepository.getLatestGameEntry()!=null ?gameRepository.getLatestGameEntry().getValue():gameRepository.create(game);
+        return gameRepository.getLatestGameEntry()!=null ?
+                gameRepository.getLatestGameEntry().getValue():
+                gameRepository.create(game);
     }
 
     @SendTo("/topic/play")
@@ -40,13 +43,13 @@ public class GameController {
     }
 
 
-//    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void delete(@PathVariable String id) {
-//            Game game = gameRepository.findById(id);
-//            gameRepository.delete(game);
-//    }
-//
+    @SendTo("/topic/game")
+    @MessageMapping("/delete/{id}")
+    public void delete(@DestinationVariable String id) {
+            Game game = gameRepository.findById(id);
+            gameRepository.delete(game);
+    }
+
     @Autowired
     public void setGameRepository(GameRepository gameRepository) {
         this.gameRepository = gameRepository;

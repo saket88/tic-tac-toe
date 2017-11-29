@@ -108,14 +108,6 @@ function GameController(GAME_EVENTS, PIECES, gameService, $scope, $q, $mdToast, 
                 return gameService.currentGame.playTurn(selectedCell);
             })
             .then(function(result) {
-                if (vm.gameExists && !vm.paused) {
-                    $scope.$broadcast(GAME_EVENTS.MOVE_COMPLETED, result);
-                } else if (vm.gameExists && vm.paused) {
-                    vm.pausedResult = result;
-                }
-                return result;
-            })
-            .then(function(result) {
                 if (!vm.gameExists) {
                     return;
                 } else if (!result.gameEnded && !vm.paused) {
