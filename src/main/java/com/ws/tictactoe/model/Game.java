@@ -43,6 +43,10 @@ public class Game {
     @Getter
     private Cell move;
 
+    @Getter
+    private boolean turn;
+
+    private boolean gameEnded;
 
 
     public void playTurn(Cell cell) {
@@ -53,6 +57,7 @@ public class Game {
         gameSigns[row][column] = currentGameSign;
         move=new Cell(row,column);
         nextPlayer = new Player(nextPlayer.getGameSign().toggle().name());
+        turn =  true;
         determineResult(currentGameSign);
 
     }
@@ -157,6 +162,8 @@ public class Game {
     }
 
     public boolean isGameEnded() {
+        if(gameEnded)
+            return true;
         return isTie() || (winner!=null);
     }
 

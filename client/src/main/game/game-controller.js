@@ -58,7 +58,7 @@ function GameController(GAME_EVENTS, PIECES, gameService, $scope, $q, $mdToast, 
               vm.currentGame = undefined;
               deferredMove = undefined;
               if (gameService.currentGame) {
-                       return gameService.endCurrentGame();
+                       return gameService.startOrPlay('','');
                      } else {
                          return $q.when();
                }
@@ -67,7 +67,7 @@ function GameController(GAME_EVENTS, PIECES, gameService, $scope, $q, $mdToast, 
 
      function initRound() {
        var gameConfig = _.cloneDeep(vm.gameConfig);
-       return gameService.startNewGame(gameConfig)
+       return gameService.startOrPlay(gameConfig,'')
             .then(function() {
                 vm.currentGame = gameService.currentGame;
                 vm.gameExists = true;
@@ -105,7 +105,7 @@ function GameController(GAME_EVENTS, PIECES, gameService, $scope, $q, $mdToast, 
             deferredMove = $q.defer();
             deferredMove.promise
             .then(function(selectedCell) {
-                return gameService.currentGame.playTurn(selectedCell);
+                return gameService.startOrPlay('',selectedCell);
             })
             .then(function(result) {
                 if (!vm.gameExists) {

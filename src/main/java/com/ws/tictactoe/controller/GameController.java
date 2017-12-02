@@ -34,7 +34,7 @@ public class GameController {
                 gameRepository.create(game);
     }
 
-    @SendTo("/topic/play")
+    @SendTo("/topic/game")
     @MessageMapping("/turn")
     public Game playTurn(@RequestBody @Validated Cell cell) {
         Game game = gameRepository.findById(cell.getId());
@@ -45,9 +45,14 @@ public class GameController {
 
     @SendTo("/topic/game")
     @MessageMapping("/delete/{id}")
-    public void delete(@DestinationVariable String id) {
+    public Game delete(@DestinationVariable String id) {
             Game game = gameRepository.findById(id);
+            game =  Game.builder()
+                    .gameEnded(true)
+                    .build();
+
             gameRepository.delete(game);
+            return game;
     }
 
     @Autowired
