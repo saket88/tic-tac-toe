@@ -42,6 +42,13 @@ function gameService(GAME_EVENTS, $rootScope, $stomp, $http, $q, $log) {
                             service.currentGame = new Game(payload);
                             if (typeof (spinner) != "undefined")
                                 spinner.hide();
+
+                            if (typeof (vm) != "undefined" && vm!='') {
+                                vm.gameExists = false;
+                                vm.paused = false;
+                                vm.currentGame = undefined;
+                            }
+
                             $rootScope.$broadcast(GAME_EVENTS.MOVE_COMPLETED, service.currentGame);
                             $stomp.send('/ticTacToe/delete/' + service.currentGame.id, {});
                             $stomp.disconnect().then(function () {
@@ -59,13 +66,13 @@ function gameService(GAME_EVENTS, $rootScope, $stomp, $http, $q, $log) {
                     });
 
 
-                if (gameParams != '')
+                if (typeof (gameParams) != "undefined" && gameParams != '')
                     $stomp.send('/ticTacToe/create', gameParams);
-                if (selectedMove != '') {
+                if (typeof (selectedMove) != "undefined" && selectedMove != '') {
                     selectedMove.id = service.currentGame.id;
                     $stomp.send('/ticTacToe/turn', selectedMove);
                 }
-                if ((gameParams == '' && selectedMove == '')||(gameParams == "undefined" && selectedMove == "undefined")) {
+                if ((gameParams == '' && selectedMove == '')||(typeof (gameParams) == "undefined" && typeof (selectedMove) == "undefined")) {
                     vm.gameExists = false;
                     vm.paused = false;
                     vm.currentGame = undefined;

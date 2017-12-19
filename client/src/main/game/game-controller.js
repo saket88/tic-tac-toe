@@ -61,10 +61,10 @@ function GameController(GAME_EVENTS, PIECES, spinnerOverlay, gameService, $scope
     }
 
     function endGame() {
-        // vm.gameExists = false;
-        // vm.paused = false;
-        // vm.currentGame = undefined;
-        deferredMove = undefined;
+         vm.gameExists = false;
+         vm.paused = false;
+         vm.currentGame = undefined;
+         deferredMove = undefined;
         if (gameService.currentGame) {
             return gameService.startOrPlay('', '');
         } else {
