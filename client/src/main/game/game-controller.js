@@ -6,11 +6,11 @@ var _ = require("lodash");
 angular.module("ticTacToe")
     .controller("GameController", GameController)
 
-function GameController(GAME_EVENTS, PIECES, spinnerOverlay,gameService, $scope, $q, $mdToast, $mdMedia, $timeout) {
+function GameController(GAME_EVENTS, PIECES, spinnerOverlay, gameService, $scope, $q, $mdToast, $mdMedia, $timeout) {
     var vm = this;
     var deferredMove;
     var boardSpinner = spinnerOverlay("board-container");
-    var tabId=getRandomIntInclusive(1,1000);
+    var tabId = getRandomIntInclusive(1, 1000);
     vm.init = init;
     vm.startGame = startGame;
     vm.endGame = endGame;
@@ -19,9 +19,9 @@ function GameController(GAME_EVENTS, PIECES, spinnerOverlay,gameService, $scope,
     init();
 
     function getRandomIntInclusive(min, max) {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
     }
 
     function init() {
@@ -32,51 +32,50 @@ function GameController(GAME_EVENTS, PIECES, spinnerOverlay,gameService, $scope,
         return $q.all({
 
             PIECES: PIECES,
-              gameConfig: {
-                            gameSign:"X"
-              }
-    }).then(function(data) {
-                  _.extend(vm, data);
-              });
+            gameConfig: {
+                gameSign: "X"
+            }
+        }).then(function (data) {
+            _.extend(vm, data);
+        });
 
     }
 
     function resetStats() {
-            vm.gameStats = {
-                currentRound: 0,
-                ties: 0,
-                wins: {}
-            };
-            vm.gameStats.wins[PIECES.X] = 0;
-            vm.gameStats.wins[PIECES.O] = 0;
+        vm.gameStats = {
+            currentRound: 0,
+            ties: 0,
+            wins: {}
+        };
+        vm.gameStats.wins[PIECES.X] = 0;
+        vm.gameStats.wins[PIECES.O] = 0;
 
+        return $q.when();
+    }
+
+    function startGame() {
+
+        return resetStats()
+            .then(initRound)
+            .then(play);
+    }
+
+    function endGame() {
+        // vm.gameExists = false;
+        // vm.paused = false;
+        // vm.currentGame = undefined;
+        deferredMove = undefined;
+        if (gameService.currentGame) {
+            return gameService.startOrPlay('', '');
+        } else {
             return $q.when();
         }
-
-        function startGame() {
-
-           return resetStats()
-                       .then(initRound)
-                       .then(play);
-         }
-
-         function endGame() {
-              vm.gameExists = false;
-              vm.paused = false;
-              vm.currentGame = undefined;
-              deferredMove = undefined;
-              if (gameService.currentGame) {
-                       return gameService.startOrPlay('','');
-                     } else {
-                         return $q.when();
-               }
-         }
+    }
 
 
-     function initRound() {
-       var gameConfig = _.cloneDeep(vm.gameConfig);
-       return gameService.startOrPlay(gameConfig,'')
-            .then(function() {
+    function initRound() {
+        return gameService.startOrPlay(vm, '')
+            .then(function () {
                 vm.currentGame = gameService.currentGame;
                 vm.gameExists = true;
                 vm.paused = false;
@@ -87,37 +86,37 @@ function GameController(GAME_EVENTS, PIECES, spinnerOverlay,gameService, $scope,
     }
 
     function updateStats(result) {
-            if (result.gameEnded) {
-                if (result.winner) {
-                    vm.gameStats.wins[result.winner]++;
-                } else {
-                    vm.gameStats.ties++;
-                }
+        if (result.gameEnded) {
+            if (result.winner) {
+                vm.gameStats.wins[result.winner]++;
+            } else {
+                vm.gameStats.ties++;
             }
-            return $q.when();
         }
+        return $q.when();
+    }
 
     function setPaused(isPaused) {
-            vm.paused = isPaused;
-            if (!isPaused) {
-                if (vm.pausedResult) {
-                    $scope.$broadcast(GAME_EVENTS.MOVE_COMPLETED, vm.pausedResult);
-                    vm.pausedResult = undefined;
-                }
-                play();
+        vm.paused = isPaused;
+        if (!isPaused) {
+            if (vm.pausedResult) {
+                $scope.$broadcast(GAME_EVENTS.MOVE_COMPLETED, vm.pausedResult);
+                vm.pausedResult = undefined;
             }
+            play();
         }
+    }
 
 
-   function play() {
-            deferredMove = $q.defer();
-            deferredMove.promise
-            .then(function(selectedCell) {
-                selectedCell.tabId=tabId;
+    function play() {
+        deferredMove = $q.defer();
+        deferredMove.promise
+            .then(function (selectedCell) {
+                selectedCell.tabId = tabId;
                 boardSpinner.show();
-                return gameService.startOrPlay('',selectedCell,boardSpinner);
+                return gameService.startOrPlay('', selectedCell, boardSpinner);
             })
-            .then(function(result) {
+            .then(function (result) {
                 if (!vm.gameExists) {
                     return;
                 } else if (!result.gameEnded && !vm.paused) {
@@ -128,7 +127,7 @@ function GameController(GAME_EVENTS, PIECES, spinnerOverlay,gameService, $scope,
                     endGame();
                 }
             })
-            .catch(function(response) {
+            .catch(function (response) {
                 if (vm.gameExists) {
                     return handleError(response);
                 } else {
@@ -157,15 +156,12 @@ function GameController(GAME_EVENTS, PIECES, spinnerOverlay,gameService, $scope,
         return $q.reject(response);
     }
 
-     function selectPlayerMove(event, selectedCell) {
-            if (!vm.gameExists) {
-                return;
-            }
-
-
-
-            deferredMove.resolve(selectedCell);
+    function selectPlayerMove(event, selectedCell) {
+        if (!vm.gameExists) {
+            return;
         }
+        deferredMove.resolve(selectedCell);
+    }
 
 
 }

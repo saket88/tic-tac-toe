@@ -16,8 +16,9 @@ function gameService(GAME_EVENTS, $rootScope, $stomp, $http, $q, $log) {
     return service;
 
 
-    function startOrPlay(gameParams, selectedMove, boardSpinner) {
+    function startOrPlay(vm, selectedMove, boardSpinner) {
 
+        var gameParams = _.cloneDeep(vm.gameConfig);
         tabId = selectedMove.tabId;
         var spinner = boardSpinner;
         var response = [];
@@ -62,10 +63,12 @@ function gameService(GAME_EVENTS, $rootScope, $stomp, $http, $q, $log) {
                     $stomp.send('/ticTacToe/create', gameParams);
                 if (selectedMove != '') {
                     selectedMove.id = service.currentGame.id;
-
                     $stomp.send('/ticTacToe/turn', selectedMove);
                 }
-                if (gameParams == '' && selectedMove == '') {
+                if ((gameParams == '' && selectedMove == '')||(gameParams == "undefined" && selectedMove == "undefined")) {
+                    vm.gameExists = false;
+                    vm.paused = false;
+                    vm.currentGame = undefined;
                     $stomp.send('/ticTacToe/delete/' + service.currentGame.id, {});
                 }
 
@@ -80,20 +83,6 @@ function gameService(GAME_EVENTS, $rootScope, $stomp, $http, $q, $log) {
         if (typeof service.currentGame == "undefined") {
             return $q.when();
         }
-        //        $stomp.connect('http://localhost:8080/games-websocket', {})
-        //                             .then(function (frame) {
-        //                             var subscription = $stomp.subscribe('/topic/game',
-        //                                function (payload, headers, res) {
-        //                                service.currentGame = undefined;
-        //                                $stomp.unsubscribe();
-        //                                $stomp.disconnect().then(function () {
-        //                                          $log.info('disconnected')
-        //                                        });
-        //                                deferred.resolve();
-        //                                            });
-        //                                   $stomp.send('/ticTacToe/delete/'+service.currentGame.id, {});
-        //
-        //                                });
         return deferred.promise;
     }
 
