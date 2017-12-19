@@ -16,7 +16,6 @@ var GAME_EVENTS = {
     SHOW_LAST_MOVE: "show last move"
 };
 
-
 angular
     .module("ticTacToe", ["ngMaterial","ngStomp"])
     .constant("GAME_EVENTS", GAME_EVENTS)

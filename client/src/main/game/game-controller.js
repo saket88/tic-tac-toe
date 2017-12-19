@@ -6,16 +6,24 @@ var _ = require("lodash");
 angular.module("ticTacToe")
     .controller("GameController", GameController)
 
-function GameController(GAME_EVENTS, PIECES, gameService, $scope, $q, $mdToast, $mdMedia, $timeout) {
+function GameController(GAME_EVENTS, PIECES, spinnerOverlay,gameService, $scope, $q, $mdToast, $mdMedia, $timeout) {
     var vm = this;
     var deferredMove;
-
+    var boardSpinner = spinnerOverlay("board-container");
+    var tabId=getRandomIntInclusive(1,1000);
     vm.init = init;
     vm.startGame = startGame;
     vm.endGame = endGame;
     $scope.$on(GAME_EVENTS.MOVE_SELECTED, selectPlayerMove);
     $scope.$watch(screenIsSmall, handleSmallScreen);
     init();
+
+    function getRandomIntInclusive(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+    }
+
     function init() {
         vm.gameExists = false;
         vm.screenIsSmall = screenIsSmall();
@@ -105,12 +113,15 @@ function GameController(GAME_EVENTS, PIECES, gameService, $scope, $q, $mdToast, 
             deferredMove = $q.defer();
             deferredMove.promise
             .then(function(selectedCell) {
-                return gameService.startOrPlay('',selectedCell);
+                selectedCell.tabId=tabId;
+                boardSpinner.show();
+                return gameService.startOrPlay('',selectedCell,boardSpinner);
             })
             .then(function(result) {
                 if (!vm.gameExists) {
                     return;
                 } else if (!result.gameEnded && !vm.paused) {
+
                     play();
                 } else if (result.gameEnded) {
                     updateStats(result);

@@ -19,7 +19,7 @@ public class Game {
     }
 
     @Getter
-    private final String id = UUID.randomUUID().toString();
+    private  String id ;
 
     @Getter
     GameSign[][] board;
@@ -46,6 +46,9 @@ public class Game {
     @Getter
     private boolean turn;
 
+    @Getter
+    private String tabId;
+
     private boolean gameEnded;
 
 
@@ -58,6 +61,7 @@ public class Game {
         move=new Cell(row,column);
         nextPlayer = new Player(nextPlayer.getGameSign().toggle().name());
         turn =  true;
+        tabId = cell.getTabId();
         determineResult(currentGameSign);
 
     }

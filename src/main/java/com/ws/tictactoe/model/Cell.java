@@ -8,13 +8,16 @@ public class Cell {
 
 
     @Getter
-    public final String id;
+    private final String id;
 
     @Getter
-    public final int row;
+    private  final String tabId;
 
     @Getter
-    public final int column;
+    private final int row;
+
+    @Getter
+    private final int column;
 
 
     @JsonCreator
@@ -22,9 +25,11 @@ public class Cell {
         this.row = row;
         this.column = column;
         this.id = "";
+        this.tabId="";
     }
     @JsonCreator
-    public Cell( @JsonProperty("id") String id,@JsonProperty("row") int row, @JsonProperty("column") int column) {
+    public Cell(@JsonProperty("id") String id, @JsonProperty("tabId") String tabId, @JsonProperty("row") int row, @JsonProperty("column") int column) {
+        this.tabId = tabId;
         this.row = row;
         this.column = column;
         this.id = id;

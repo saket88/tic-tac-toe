@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.UUID;
+
 
 @Controller
 public class GameController {
@@ -25,6 +27,7 @@ public class GameController {
     @MessageMapping("/create")
     public Game create(@RequestBody @Validated Player nextPlayer) {
         Game game = Game.builder()
+                .id(UUID.randomUUID().toString())
                 .nextPlayer(nextPlayer)
                 .board(initializeGameBoard())
                 .build();
@@ -46,13 +49,16 @@ public class GameController {
     @SendTo("/topic/game")
     @MessageMapping("/delete/{id}")
     public Game delete(@DestinationVariable String id) {
-            Game game = gameRepository.findById(id);
-            game =  Game.builder()
+        Game exisitngGame =gameRepository.findById(id);
+
+        if(exisitngGame!=null)
+            gameRepository.delete(gameRepository.findById(id));
+
+        return   Game.builder()
+                    .id(id)
                     .gameEnded(true)
                     .build();
 
-            gameRepository.delete(game);
-            return game;
     }
 
     @Autowired
