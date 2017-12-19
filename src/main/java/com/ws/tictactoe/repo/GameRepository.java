@@ -13,7 +13,6 @@ public class GameRepository {
     private NavigableMap<String, Game> games = new TreeMap<>();
 
     public Game create(Game game) {
-        System.out.println(" Game Id "+game.getId());
         games.put(game.getId(),game);
         return game;
     }

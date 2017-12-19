@@ -20,8 +20,9 @@ public class GameRepositoryTest extends GameUnitTest{
     public void saveTheGame(){
 
         Game game = underTest.create(Game.builder()
-        .nextPlayer(new Player("O"))
-        .build());
+                .id("1")
+                .nextPlayer(new Player("O"))
+                .build());
 
         assertThat(game,is(underTest.findById(game.getId())));
         assertThat(game.getNextPlayer().getGameSign(),is(O));
